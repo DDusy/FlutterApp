@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "999512416353",
+    "firebase_url": "https://fir-withfluuter-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "fir-withfluuter",
+    "storage_bucket": "fir-withfluuter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999512416353:android:964c1806a280eefbd90a20",
+        "android_client_info": {
+          "package_name": "com.example.myflutterapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999512416353-i4go9lkh0hroaju283dsdvo6fne5vf2v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMHn9jQtOII4F5cVlpetoQi0A8qdDd0nI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "999512416353-i4go9lkh0hroaju283dsdvo6fne5vf2v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "999512416353-8v9c86i9c61769t2r3og0nmc5mr5rifi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sampleFlutterApplication"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
