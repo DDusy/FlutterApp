@@ -46,7 +46,7 @@ class ButtonSample extends StatelessWidget {
 
               const Text(
                 'App Name', 
-                style: TextStyle(fontSize: 48)
+                style: TextStyle(fontSize: 44)
               ),
           
               // Email Address
