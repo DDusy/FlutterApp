@@ -1,6 +1,7 @@
-import 'dart:html';
+import 'signup_route.dart';
 
 import 'package:flutter/material.dart';
+import 'package:myflutterapp/pages/signup_route.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -54,7 +55,10 @@ class LoginPage extends StatelessWidget {
                 primary: Colors.black,
               ),
               onPressed: () {
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context)=>const signup_route())
+                );
               },
               child: const Text('Sign up'),
             ),

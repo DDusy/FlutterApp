@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(primaryColor: Color.fromARGB(255, 26, 26, 26)),
       home: const LoginPage(),
     );
   }
