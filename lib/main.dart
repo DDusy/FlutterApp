@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+import 'pages/login_page.dart';
+
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +16,18 @@ void main() async {
   runApp(const MyApp());
 }
 
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: const LoginPage(),
+    );
+  }
+}
+
+/*
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -160,6 +174,7 @@ class ButtonSample extends StatelessWidget {
       ); 
   }
 }
+*/
 
 // Widget build(BuildContext context) {
   //   return Scaffold(
