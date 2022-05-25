@@ -1,8 +1,11 @@
+// ignore_for_file: use_build_context_synchronously, unused_local_variable
+
 import 'package:flutter/material.dart';
 
+import 'package:myflutterapp/main.dart';
 import 'package:myflutterapp/custom_class/c_inputfield.dart';
 
-import 'package:firebase_core/firebase_core.dart';
+//import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:myflutterapp/custom_class/c_filledbutton.dart';
@@ -15,8 +18,10 @@ class signup_route extends StatefulWidget {
 }
 
 class _signup_route extends State<signup_route> {
-  var newuserEmailController = TextEditingController();
+
+
   var newuserNameController = TextEditingController();
+  var newuserEmailController = TextEditingController();
   var newuserPasswordController = TextEditingController();
 
   bool isemptyemail = true;
@@ -73,19 +78,6 @@ class _signup_route extends State<signup_route> {
   void initState() {
     super.initState();
 
-    newuserNameController.addListener(() {
-      isemptyName = newuserNameController.text.isEmpty;
-
-      enabledbutton = !isemptyName && !isemptyemail && !isemptypassword;
-    });
-
-    newuserEmailController.addListener(() {
-      setState(() {
-        isemptyemail = newuserEmailController.text.isEmpty;
-
-        enabledbutton = !isemptyName && !isemptyemail && !isemptypassword;
-      });
-    });
 
     newuserPasswordController.addListener(() {
       setState(() {
@@ -98,84 +90,112 @@ class _signup_route extends State<signup_route> {
     });
   }
 
+  bool checkController(TextEditingController controller){
+    return controller.text.isEmpty;
+  }
+
   void signup() async {
-    UserCredential userCredential;
+
+
+    if(checkController(newuserNameController)){
+      MyApp.createSnackBar(context, 'Please enter name');
+      return;
+    }
+    else if(checkController(newuserEmailController)){
+      MyApp.createSnackBar(context, 'Please enter email');
+      return;
+    }
+    else if(checkController(newuserPasswordController)){
+      MyApp.createSnackBar(context, 'Please enter password');
+      return;
+    }
+
+    var instance = FirebaseAuth.instance;
+    bool bcomplete = true;
 
     try {
-      userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: newuserEmailController.text,
-              password: newuserPasswordController.text);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('is too weak');
-      } else if (e.code == 'email-already-in-use') {
-        print('is already use');
-      } else if (e.code == 'invalid-email') {
-        print('invalid email');
-      }
-    } catch (e) {
-      print(e);
+      UserCredential userCredential = await instance.createUserWithEmailAndPassword(
+        email: newuserEmailController.text,
+        password: newuserPasswordController.text
+      );
+    } 
+    on FirebaseAuthException catch (e) {
+      MyApp.createSnackBar(context, e.code);
+      bcomplete = false;
+    }
+    catch (e) {
+      bcomplete = false;
+    }
+
+    if(bcomplete){
+      MyApp.createSnackBar(context, 'Your Account is created successfully!');
+      Navigator.pop(context);
+      instance.currentUser!.updateDisplayName(newuserNameController.text);
+
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("SignUp"),
-        ),
-        body: Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.only(top: 50),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              InputField(
-                hintText: 'name',
-                padding: const EdgeInsets.only(left: 10),
-                margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-                controller: newuserNameController,
-              ),
 
-              // Email Address
-              InputField(
-                hintText: 'Email Address',
-                padding: const EdgeInsets.only(left: 10),
-                margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-                controller: newuserEmailController,
-              ),
+      appBar: AppBar(
+        title: const Text("SignUp"),
+      ),
+      body: Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.only(top: 50),
+          child:
+              Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            InputField(
+              hintText: 'name',
+              padding: const EdgeInsets.only(left: 10),
+              margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+              controller: newuserNameController,
+              type: TextInputType.text,
+            ),
 
-              // Password
-              InputField(
-                hintText: 'Password',
-                padding: const EdgeInsets.only(left: 10),
-                margin: const EdgeInsets.fromLTRB(15, 20, 15, 5),
-                isPassword: true,
-                controller: newuserPasswordController,
-              ),
+            // Email Address
+            InputField(
+              hintText: 'Email Address',
+              padding: const EdgeInsets.only(left: 10),
+              margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+              controller: newuserEmailController,
+              type: TextInputType.emailAddress,
+            ),
 
-              SizedBox(
-                width: 200,
-                height: 10,
-                child: LinearProgressIndicator(
-                  value: _strength,
-                  backgroundColor: Colors.grey[300],
-                  color: _strength <= 1 / 4
-                      ? Colors.red
-                      : _strength == 2 / 4
-                          ? Colors.yellow
-                          : _strength == 3 / 4
-                              ? Colors.blue
-                              : Colors.green,
-                  minHeight: 20,
-                ),
-              ),
+            // Password
+            InputField(
+              hintText: 'Password',
+              padding: const EdgeInsets.only(left: 10),
+              margin: const EdgeInsets.fromLTRB(15, 20, 15, 5),
+              isPassword: true,
+              controller: newuserPasswordController,
+              type: TextInputType.visiblePassword
+            ),
 
-              Text(
-                _displayText,
-                style: const TextStyle(fontSize: 10),
+            SizedBox(
+              width: 200,
+              height: 10,
+              child: LinearProgressIndicator(
+                value: _strength,
+                backgroundColor: Colors.grey[300],
+                color: _strength <= 1 / 4 ? Colors.red
+                      : _strength == 2 / 4 ? Colors.yellow
+                      : _strength == 3 / 4 ? Colors.blue : Colors.green,
+                minHeight: 20,
               ),
-              FilledButton(hintText: Text("data"), func: signup)
-            ])));
+            ),
+
+            Text(
+              _displayText,
+              style: const TextStyle(fontSize: 10),
+            ),
+        
+            FilledButton(hintText: Text("Sign Up"), func: signup)
+          ]
+        )
+      )
+    );
   }
 }
