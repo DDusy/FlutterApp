@@ -8,7 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:firebase_core/firebase_core.dart';
 
 class LoginPage extends StatefulWidget {
-
   LoginPage({Key? key}) : super(key: key);
 
   @override
@@ -16,9 +15,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
+  var buttontest = GestureDetector();
 
   bool isemptyemail = true;
   bool isemptypassword = true;
@@ -28,8 +27,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    
-    emailController.addListener( () {
+
+    emailController.addListener(() {
       setState(() {
         isemptyemail = emailController.text.isEmpty;
 
@@ -46,44 +45,35 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void signin() async {
-
     UserCredential userCredential;
     bool bcomplete = true;
 
-    try{
+    try {
       userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text
-      );
-    } 
-    on FirebaseAuthException catch(e) {
+          email: emailController.text, password: passwordController.text);
+    } on FirebaseAuthException catch (e) {
       // print('enter FirebaseAuthException Catch');
       // print(e.code);
-      if(e.code == 'user-not-found' || e.code == 'wrong-password') {
+      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
         print('user not found');
-      }
-      else if(e.code == 'invalid-email'){
+      } else if (e.code == 'invalid-email') {
         print('please enter email');
       }
 
       bcomplete = false;
-    }
-    catch(e) {
+    } catch (e) {
       print('Catch');
       bcomplete = false;
     }
 
-    if(bcomplete)
-      print('signin complete');
+    if (bcomplete) print('signin complete');
 
     // navigator push login->main
   }
 
   void signup() {
     Navigator.push(
-        context, 
-        MaterialPageRoute(builder: (context) => const signup_route())
-    );
+        context, MaterialPageRoute(builder: (context) => const signup_route()));
 
     print(emailController.text);
   }
@@ -105,8 +95,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        padding: const EdgeInsets.only(top:50),
-        
+        padding: const EdgeInsets.only(top: 50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -117,14 +106,12 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.black,
               ),
             ),
-
             InputField(
               hintText: 'Email Address',
               padding: const EdgeInsets.only(left: 10),
               margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
               controller: emailController,
             ),
-
             InputField(
               hintText: 'Password',
               padding: const EdgeInsets.only(left: 10),
@@ -132,20 +119,20 @@ class _LoginPageState extends State<LoginPage> {
               isPassword: true,
               controller: passwordController,
             ),
-
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                // Text Color
-                onPrimary: Colors.white,//Theme.of(context).colorScheme.onPrimary,
-                // Box Color
-                primary: Colors.black//Theme.of(context).colorScheme.primary,
-              ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                      // Text Color
+                      onPrimary: Colors
+                          .white, //Theme.of(context).colorScheme.onPrimary,
+                      // Box Color
+                      primary:
+                          Colors.black //Theme.of(context).colorScheme.primary,
+                      )
+                  .copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
               onPressed: enabledbutton ? signin : null,
               child: const Text('Sign in'),
             ),
-
-            const Padding(padding: EdgeInsets.only(top:30)),
-
+            const Padding(padding: EdgeInsets.only(top: 30)),
             TextButton(
               style: TextButton.styleFrom(
                 primary: Colors.black,
@@ -155,7 +142,6 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: signup,
               child: const Text('Sign up'),
             ),
-            
             TextButton(
               style: TextButton.styleFrom(
                 primary: Colors.black,

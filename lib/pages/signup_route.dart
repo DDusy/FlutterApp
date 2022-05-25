@@ -5,6 +5,8 @@ import 'package:myflutterapp/custom_class/c_inputfield.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:myflutterapp/custom_class/c_filledbutton.dart';
+
 class signup_route extends StatefulWidget {
   const signup_route({Key? key}) : super(key: key);
 
@@ -13,10 +15,15 @@ class signup_route extends StatefulWidget {
 }
 
 class _signup_route extends State<signup_route> {
-
   var newuserEmailController = TextEditingController();
-  // var newuserNameController = TextEditingController();
+  var newuserNameController = TextEditingController();
   var newuserPasswordController = TextEditingController();
+
+  bool isemptyemail = true;
+  bool isemptyName = true;
+  bool isemptypassword = true;
+
+  bool enabledbutton = false;
 
   late String _email = "";
   late String _password = "";
@@ -33,6 +40,7 @@ class _signup_route extends State<signup_route> {
     if (_password.isEmpty) {
       setState(() {
         _strength = 0;
+        _displayText = "";
       });
     } else if (_password.length < 6) {
       setState(() {
@@ -61,30 +69,55 @@ class _signup_route extends State<signup_route> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+
+    newuserNameController.addListener(() {
+      isemptyName = newuserNameController.text.isEmpty;
+
+      enabledbutton = !isemptyName && !isemptyemail && !isemptypassword;
+    });
+
+    newuserEmailController.addListener(() {
+      setState(() {
+        isemptyemail = newuserEmailController.text.isEmpty;
+
+        enabledbutton = !isemptyName && !isemptyemail && !isemptypassword;
+      });
+    });
+
+    newuserPasswordController.addListener(() {
+      setState(() {
+        isemptypassword = newuserPasswordController.text.isEmpty;
+
+        enabledbutton = !isemptyName && !isemptyemail && !isemptypassword;
+
+        _checkPassword(newuserPasswordController.text.trim());
+      });
+    });
+  }
+
   void signup() async {
     UserCredential userCredential;
 
-    try{
-      userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: newuserEmailController.text,
-        password: newuserPasswordController.text
-      );
-    } 
-    on FirebaseAuthException catch (e){
-      if(e.code == 'weak-password'){
+    try {
+      userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: newuserEmailController.text,
+              password: newuserPasswordController.text);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
         print('is too weak');
-      }
-      else if(e.code == 'email-already-in-use'){
+      } else if (e.code == 'email-already-in-use') {
         print('is already use');
-      }
-      else if(e.code == 'invalid-email'){
+      } else if (e.code == 'invalid-email') {
         print('invalid email');
       }
-    }
-    catch(e){
+    } catch (e) {
       print(e);
     }
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,60 +130,33 @@ class _signup_route extends State<signup_route> {
             padding: const EdgeInsets.only(top: 50),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              // Email Address
-              Container(
+              InputField(
+                hintText: 'name',
                 padding: const EdgeInsets.only(left: 10),
                 margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-                width: double.infinity,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 255, 246, 233),
-                  border: Border.all(color: Colors.black),
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
-                ),
-                child: TextField(
-                  obscureText: false,
-                  controller: newuserEmailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email Address',
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                  ),
-                  style: const TextStyle(fontSize: 15),
-                  keyboardType: TextInputType.emailAddress,
-                ),
+                controller: newuserNameController,
+              ),
+
+              // Email Address
+              InputField(
+                hintText: 'Email Address',
+                padding: const EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                controller: newuserEmailController,
               ),
 
               // Password
-              Container(
+              InputField(
+                hintText: 'Password',
                 padding: const EdgeInsets.only(left: 10),
-                margin: const EdgeInsets.fromLTRB(15, 20, 15, 25),
-                width: double.infinity,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 255, 246, 233),
-                  border: Border.all(color: Colors.black),
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
-                ),
-                child: TextField(
-                  onChanged: (value) => _checkPassword(value),
-                  obscureText: false,
-                  controller: newuserPasswordController,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                  ),
-                  style: const TextStyle(fontSize: 15),
-                  keyboardType: TextInputType.emailAddress,
-                ),
+                margin: const EdgeInsets.fromLTRB(15, 20, 15, 5),
+                isPassword: true,
+                controller: newuserPasswordController,
               ),
 
               SizedBox(
-                width: 400,
-                height: 25,
+                width: 200,
+                height: 10,
                 child: LinearProgressIndicator(
                   value: _strength,
                   backgroundColor: Colors.grey[300],
@@ -167,23 +173,9 @@ class _signup_route extends State<signup_route> {
 
               Text(
                 _displayText,
-                style: const TextStyle(fontSize: 15),
+                style: const TextStyle(fontSize: 10),
               ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-                width: double.infinity,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 255, 246, 233),
-                  border: Border.all(color: Colors.black),
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
-                ),
-                child: TextButton(
-                  onPressed: signup,
-                  child: const Text('가입하기'),
-                ),
-              ),
+              FilledButton(hintText: Text("data"), func: signup)
             ])));
   }
 }
