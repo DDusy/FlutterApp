@@ -1,10 +1,104 @@
-import 'signup_route.dart';
-
 import 'package:flutter/material.dart';
+
+//import 'signup_route.dart';
+import 'package:myflutterapp/custom_class/c_inputfield.dart';
 import 'package:myflutterapp/pages/signup_route.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_core/firebase_core.dart';
+
+class LoginPage extends StatefulWidget {
+
+  LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+
+  bool isemptyemail = true;
+  bool isemptypassword = true;
+
+  bool enabledbutton = false;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    emailController.addListener( () {
+      setState(() {
+        isemptyemail = emailController.text.isEmpty;
+
+        enabledbutton = !isemptyemail && !isemptypassword;
+      });
+    });
+    passwordController.addListener(() {
+      setState(() {
+        isemptypassword = passwordController.text.isEmpty;
+
+        enabledbutton = !isemptyemail && !isemptypassword;
+      });
+    });
+  }
+
+  void signin() async {
+
+    UserCredential userCredential;
+    bool bcomplete = true;
+
+    try{
+      userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text
+      );
+    } 
+    on FirebaseAuthException catch(e) {
+      // print('enter FirebaseAuthException Catch');
+      // print(e.code);
+      if(e.code == 'user-not-found' || e.code == 'wrong-password') {
+        print('user not found');
+      }
+      else if(e.code == 'invalid-email'){
+        print('please enter email');
+      }
+
+      bcomplete = false;
+    }
+    catch(e) {
+      print('Catch');
+      bcomplete = false;
+    }
+
+    if(bcomplete)
+      print('signin complete');
+
+    // navigator push login->main
+  }
+
+  void signup() {
+    Navigator.push(
+        context, 
+        MaterialPageRoute(builder: (context) => const signup_route())
+    );
+
+    print(emailController.text);
+  }
+
+  void reset() {
+    print(passwordController.text);
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +122,7 @@ class LoginPage extends StatelessWidget {
               hintText: 'Email Address',
               padding: const EdgeInsets.only(left: 10),
               margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+              controller: emailController,
             ),
 
             InputField(
@@ -35,6 +130,7 @@ class LoginPage extends StatelessWidget {
               padding: const EdgeInsets.only(left: 10),
               margin: const EdgeInsets.fromLTRB(15, 20, 15, 25),
               isPassword: true,
+              controller: passwordController,
             ),
 
             ElevatedButton(
@@ -44,31 +140,27 @@ class LoginPage extends StatelessWidget {
                 // Box Color
                 primary: Colors.black//Theme.of(context).colorScheme.primary,
               ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-              onPressed: () {
-
-              }, 
+              onPressed: enabledbutton ? signin : null,
               child: const Text('Sign in'),
             ),
+
             const Padding(padding: EdgeInsets.only(top:30)),
+
             TextButton(
               style: TextButton.styleFrom(
                 primary: Colors.black,
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context)=>const signup_route())
-                );
-              },
+              // onPressed: () {
+              // },
+              onPressed: signup,
               child: const Text('Sign up'),
             ),
+            
             TextButton(
               style: TextButton.styleFrom(
                 primary: Colors.black,
               ),
-              onPressed: () {
-
-              },
+              onPressed: reset,
               child: const Text('Forgot Password'),
             ),
           ],
@@ -77,7 +169,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
-
+/*
 // ignore: must_be_immutable
 class InputField extends StatefulWidget {
   
@@ -157,3 +249,4 @@ class _InputFieldState extends State<InputField> {
     );
   }
 }
+*/
