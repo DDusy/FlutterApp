@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'package:myflutterapp/custom_class/c_inputfield.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -10,6 +13,11 @@ class signup_route extends StatefulWidget {
 }
 
 class _signup_route extends State<signup_route> {
+
+  var newuserEmailController = TextEditingController();
+  // var newuserNameController = TextEditingController();
+  var newuserPasswordController = TextEditingController();
+
   late String _email = "";
   late String _password = "";
   late double _strength = 0;
@@ -53,6 +61,31 @@ class _signup_route extends State<signup_route> {
     }
   }
 
+  void signup() async {
+    UserCredential userCredential;
+
+    try{
+      userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: newuserEmailController.text,
+        password: newuserPasswordController.text
+      );
+    } 
+    on FirebaseAuthException catch (e){
+      if(e.code == 'weak-password'){
+        print('is too weak');
+      }
+      else if(e.code == 'email-already-in-use'){
+        print('is already use');
+      }
+      else if(e.code == 'invalid-email'){
+        print('invalid email');
+      }
+    }
+    catch(e){
+      print(e);
+    }
+  }  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,15 +108,16 @@ class _signup_route extends State<signup_route> {
                   border: Border.all(color: Colors.black),
                   borderRadius: const BorderRadius.all(Radius.circular(15)),
                 ),
-                child: const TextField(
+                child: TextField(
                   obscureText: false,
-                  decoration: InputDecoration(
+                  controller: newuserEmailController,
+                  decoration: const InputDecoration(
                     labelText: 'Email Address',
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
                   ),
-                  style: TextStyle(fontSize: 15),
+                  style: const TextStyle(fontSize: 15),
                   keyboardType: TextInputType.emailAddress,
                 ),
               ),
@@ -102,6 +136,7 @@ class _signup_route extends State<signup_route> {
                 child: TextField(
                   onChanged: (value) => _checkPassword(value),
                   obscureText: false,
+                  controller: newuserPasswordController,
                   decoration: const InputDecoration(
                     labelText: 'Password',
                     enabledBorder: InputBorder.none,
@@ -112,6 +147,7 @@ class _signup_route extends State<signup_route> {
                   keyboardType: TextInputType.emailAddress,
                 ),
               ),
+
               SizedBox(
                 width: 400,
                 height: 25,
@@ -144,22 +180,7 @@ class _signup_route extends State<signup_route> {
                   borderRadius: const BorderRadius.all(Radius.circular(15)),
                 ),
                 child: TextButton(
-                  onPressed: () {
-                    // // 데이터 확인 없으면 DB추가
-                    // try {
-                    //   UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                    //           email: email,
-                    //           password: password);
-                    // }
-                    // on FirebaseAuthException catch (e)
-                    // {
-                    //   if('email-already-in-use'==e.code)
-                    //   {
-                    //     print('이메일이 이미 사용되고있습니다.');
-                    //   }
-
-                    // }
-                  },
+                  onPressed: signup,
                   child: const Text('가입하기'),
                 ),
               ),
