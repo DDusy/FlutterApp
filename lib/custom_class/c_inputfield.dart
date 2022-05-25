@@ -7,7 +7,7 @@ class InputField extends StatefulWidget {
   final EdgeInsets margin;
   final String hintText;
   final TextEditingController controller;
-  
+  final TextInputType type;
   bool isPassword = false;
   bool isVisible;
 
@@ -17,13 +17,14 @@ class InputField extends StatefulWidget {
     required this.margin,
     required this.hintText,
     required this.controller,
+    required this.type,
     this.isPassword = false,
     this.isVisible = false}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
   State<InputField> createState() => _InputFieldState(
-    padding, margin, hintText, controller, isPassword, isVisible
+    padding, margin, hintText, controller, type, isPassword, isVisible
   );
 }
 
@@ -33,6 +34,7 @@ class _InputFieldState extends State<InputField> {
   EdgeInsets margin;
   String hintText;
   TextEditingController controller;
+  TextInputType type;
 
   bool isPassword = false;
   bool isVisible;
@@ -42,6 +44,7 @@ class _InputFieldState extends State<InputField> {
     this.margin,
     this.hintText,
     this.controller,
+    this.type,
     this.isPassword,
     this.isVisible);
 
@@ -79,7 +82,8 @@ class _InputFieldState extends State<InputField> {
           ) : null,
         ),
         style: const TextStyle(fontSize: 15),
-        keyboardType: isVisible ? TextInputType.visiblePassword : TextInputType.emailAddress,
+        //keyboardType: isVisible ? TextInputType.visiblePassword : TextInputType.emailAddress,
+        keyboardType: type,
         // onChanged: (value){
         //   setState(() {
             
