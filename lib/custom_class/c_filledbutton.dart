@@ -18,18 +18,16 @@ class FilledButton extends StatefulWidget {
   @override
   // ignore: no_logic_in_create_state
   State<FilledButton> createState() =>
-      _FilledButtonState(hintText, func, enabledbutton, isVisible);
+      _FilledButtonState(hintText, func, isVisible);
 }
 
 class _FilledButtonState extends State<FilledButton> {
   Text hintText;
   VoidCallback func;
 
-  bool enabledbutton = false;
   bool isVisible;
 
-  _FilledButtonState(
-      this.hintText, this.func, this.enabledbutton, this.isVisible);
+  _FilledButtonState(this.hintText, this.func, this.isVisible);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,7 @@ class _FilledButtonState extends State<FilledButton> {
               primary: Colors.black //Theme.of(context).colorScheme.primary,
               )
           .copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-      onPressed: enabledbutton ? func : null,
+      onPressed: func,
       child: hintText,
     );
   }
