@@ -187,7 +187,7 @@ class _signup_route extends State<signup_route> {
               style: const TextStyle(fontSize: 10),
             ),
         
-            FilledButton(hintText: Text("Sign Up"), func: signup)
+            FilledButton(hintText: Text("Sign Up"), func: signup, mainColor: Colors.purple,)
           ]
         )
       )

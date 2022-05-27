@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myflutterapp/main.dart';
 
 // ignore: must_be_immutable
 class InputField extends StatefulWidget {
@@ -65,6 +66,7 @@ class _InputFieldState extends State<InputField> {
         controller: controller,
         decoration: InputDecoration(
           labelText: hintText,
+          labelStyle: TextStyle(color: MyApp.subColor),
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
@@ -84,6 +86,7 @@ class _InputFieldState extends State<InputField> {
         style: const TextStyle(fontSize: 15),
         //keyboardType: isVisible ? TextInputType.visiblePassword : TextInputType.emailAddress,
         keyboardType: type,
+        cursorColor: Colors.purple,
         // onChanged: (value){
         //   setState(() {
             

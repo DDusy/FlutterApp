@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 import 'pages/login_page.dart';
+// import 'pages/main_page.dart';
+// import 'custom_class/c_user.dart';
 
 void main() async {
 
@@ -18,6 +20,9 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  static Color mainColor = Colors.purple;
+  static Color subColor = Color.fromARGB(255, 206, 153, 215);
 
   static void createSnackBar(BuildContext context, String message){
     final scaffold = ScaffoldMessenger.of(context);
@@ -36,7 +41,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primaryColor: const Color.fromARGB(255, 26, 26, 26)),
+      theme: ThemeData(primaryColor: Colors.purple),
       home: LoginPage(),
     );
   }

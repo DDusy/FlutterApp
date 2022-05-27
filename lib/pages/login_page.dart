@@ -2,12 +2,15 @@
 
 import 'package:flutter/material.dart';
 //import 'package:flutter/services.dart';
-import 'package:myflutterapp/custom_class/c_filledbutton.dart';
 
-//import 'signup_route.dart';
+import 'package:myflutterapp/custom_class/c_filledbutton.dart';
 import 'package:myflutterapp/custom_class/c_inputfield.dart';
+import 'package:myflutterapp/custom_class/c_user.dart';
+import 'package:myflutterapp/pages/forgot_password_page.dart';
+
 import 'package:myflutterapp/pages/signup_route.dart';
 import 'package:myflutterapp/main.dart';
+import 'package:myflutterapp/pages/main_page.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:firebase_core/firebase_core.dart';
@@ -76,28 +79,39 @@ class _LoginPageState extends State<LoginPage> {
 
     if(bcomplete){
       if(instance.currentUser!.emailVerified){
+
+        String name = instance.currentUser!.displayName.toString();
+        String email = instance.currentUser!.email.toString();
+
+
         MyApp.createSnackBar(context, 'Hello!');
         // Navigator push signin->main
-        print(instance.currentUser);
+        Navigator.pushReplacement<void, void>(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => main_page(user: customUser(name, email)),
+          ),
+        );
       }
       else {
         await instance.currentUser!.sendEmailVerification();
         MyApp.createSnackBar(context, 'Please verify your email');
       }
     }
-
-    // navigator push login->main
   }
 
   void signup() {
-    Navigator.push(
+    Navigator.push( 
         context, 
         MaterialPageRoute(builder: (context) => const signup_route())
     );
   }
 
   void reset() {
-    //print(passwordController.text);
+    Navigator.push( 
+        context, 
+        MaterialPageRoute(builder: (context) => const forgot_password_page())
+    );
   }
 
   @override
@@ -135,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
               type: TextInputType.visiblePassword
             ),
 
-            FilledButton(hintText: const Text('Sign in'), func: signin),
+            FilledButton(hintText: const Text('Sign in'), func: signin, mainColor: MyApp.mainColor),
 
             const Padding(padding: EdgeInsets.only(top:30)),
 
@@ -143,8 +157,6 @@ class _LoginPageState extends State<LoginPage> {
               style: TextButton.styleFrom(
                 primary: Colors.black,
               ),
-              // onPressed: () {
-              // },
               onPressed: signup,
               child: const Text('Sign up'),
             ),
