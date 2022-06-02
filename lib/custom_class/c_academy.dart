@@ -60,7 +60,7 @@ class _academy_buttonState extends State<academy_button> {
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(14, 0, 0, 0),
-                        child: Text('종목'),
+                        child: Text('과목'),
                       ),
                     ],
                   ),

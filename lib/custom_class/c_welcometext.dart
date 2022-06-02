@@ -10,10 +10,10 @@ class welcomeText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: double.infinity,//MediaQuery.of(context).size.width,
       height: 100,
       decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 255, 255, 255),
+        color: Colors.white,
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 20, 0, 0),

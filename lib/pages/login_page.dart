@@ -77,26 +77,27 @@ class _LoginPageState extends State<LoginPage> {
       bcomplete = false;
     }
 
-    if(bcomplete){
-      if(instance.currentUser!.emailVerified){
+    if(!bcomplete){
+      return;
+    }
 
-        String name = instance.currentUser!.displayName.toString();
-        String email = instance.currentUser!.email.toString();
+    if (instance.currentUser!.emailVerified) {
+      String name = instance.currentUser!.displayName.toString();
+      String email = instance.currentUser!.email.toString();
 
-
-        MyApp.createSnackBar(context, 'Hello!');
-        // Navigator push signin->main
-        Navigator.pushReplacement<void, void>(
-          context,
-          MaterialPageRoute<void>(
-            builder: (BuildContext context) => main_page(user: customUser(name, email)),
-          ),
-        );
-      }
-      else {
-        await instance.currentUser!.sendEmailVerification();
-        MyApp.createSnackBar(context, 'Please verify your email');
-      }
+      MyApp.createSnackBar(context, 'Hello!');
+      // Navigator push signin->main
+      Navigator.pushReplacement<void, void>(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) =>
+              MainPage(user: CustomUser(name, email)),
+        ),
+      );
+    } 
+    else {
+      await instance.currentUser!.sendEmailVerification();
+      MyApp.createSnackBar(context, 'Please verify your email');
     }
   }
 
@@ -110,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
   void reset() {
     Navigator.push( 
         context, 
-        MaterialPageRoute(builder: (context) => const forgot_password_page())
+        MaterialPageRoute(builder: (context) => const ForgotPasswordPage())
     );
   }
 

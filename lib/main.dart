@@ -1,11 +1,13 @@
 //import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:myflutterapp/pages/main_page.dart';
 import 'firebase_options.dart';
 
 import 'pages/login_page.dart';
-// import 'pages/main_page.dart';
-// import 'custom_class/c_user.dart';
+import 'pages/testpage.dart';
+import 'custom_class/c_user.dart';
 
 void main() async {
 
@@ -43,6 +45,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(primaryColor: Colors.purple),
       home: LoginPage(),
+      //home: main_page(),
+      //home: MainPage(user: CustomUser('Y.HOLICS', 'Yholics@younha.forever'),),
     );
   }
 }

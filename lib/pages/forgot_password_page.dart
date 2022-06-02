@@ -5,14 +5,14 @@ import '../custom_class/c_filledbutton.dart';
 import '../custom_class/c_inputfield.dart';
 import '../main.dart';
 
-class forgot_password_page extends StatefulWidget {
-  const forgot_password_page({Key? key}) : super(key: key);
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({Key? key}) : super(key: key);
 
   @override
-  State<forgot_password_page> createState() => _forgot_password_pageState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _forgot_password_pageState extends State<forgot_password_page> {
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   
   //var nameController = TextEditingController();
   var emailController = TextEditingController();
@@ -68,7 +68,7 @@ class _forgot_password_pageState extends State<forgot_password_page> {
               controller: emailController,
               type: TextInputType.emailAddress,
             ),
-
+  
             Padding(padding: EdgeInsets.only(top:40)),
 
             FilledButton(hintText: Text("Reset"), func: reset, mainColor: Colors.purple,)

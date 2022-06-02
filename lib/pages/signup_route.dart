@@ -7,6 +7,7 @@ import 'package:myflutterapp/custom_class/c_inputfield.dart';
 
 //import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:myflutterapp/custom_class/c_filledbutton.dart';
 
@@ -111,6 +112,7 @@ class _signup_route extends State<signup_route> {
     bool bcomplete = true;
 
     try {
+      print('await 1 enter');
       UserCredential userCredential = await instance.createUserWithEmailAndPassword(
         email: newuserEmailController.text,
         password: newuserPasswordController.text
@@ -127,8 +129,21 @@ class _signup_route extends State<signup_route> {
     if(bcomplete){
       MyApp.createSnackBar(context, 'Your Account is created successfully!');
       Navigator.pop(context);
+      setDB();
       instance.currentUser!.updateDisplayName(newuserNameController.text);
     }
+  }
+
+  void setDB() async {
+    var store = FirebaseFirestore.instance;
+    final user = <String, dynamic>{
+      "name" : newuserNameController.text,
+      "favoritedList" : [],
+    };
+
+    print('await 2 enter');
+
+    await store.collection('Users').doc(newuserEmailController.text).set(user);
   }
 
   @override
