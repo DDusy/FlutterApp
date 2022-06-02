@@ -12,6 +12,8 @@ import 'package:myflutterapp/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:firebase_core/firebase_core.dart';
 
+import 'package:myflutterapp/pages/acdemey_info_page.dart';
+
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
@@ -30,7 +32,6 @@ class _LoginPageState extends State<LoginPage> {
   //BuildContext _context;
 
   @override
-
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
@@ -38,17 +39,15 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  bool checkController(TextEditingController controller){
+  bool checkController(TextEditingController controller) {
     return controller.text.isEmpty;
   }
 
   void signin() async {
-
-    if(checkController(emailController)){
+    if (checkController(emailController)) {
       MyApp.createSnackBar(context, 'Please enter email');
       return;
-    }
-    else if(checkController(passwordController)){
+    } else if (checkController(passwordController)) {
       MyApp.createSnackBar(context, 'Please enter password');
       return;
     }
@@ -56,47 +55,39 @@ class _LoginPageState extends State<LoginPage> {
     var instance = FirebaseAuth.instance;
     bool bcomplete = true;
 
-    try{
+    try {
       // ignore: unused_local_variable
       UserCredential userCredential = await instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text
-      );
-    } 
-    on FirebaseAuthException catch(e) {
+          email: emailController.text, password: passwordController.text);
+    } on FirebaseAuthException catch (e) {
       // print('enter FirebaseAuthException Catch');
       // print(e.code);
       MyApp.createSnackBar(context, e.code);
       bcomplete = false;
-    }
-    catch(e) {
+    } catch (e) {
       // print('Catch');
       bcomplete = false;
     }
 
-    if(bcomplete){
-      if(instance.currentUser!.emailVerified){
+    if (bcomplete) {
+      if (instance.currentUser!.emailVerified) {
         MyApp.createSnackBar(context, 'Hello!');
         // Navigator push signin->main
         print(instance.currentUser);
-      }
-      else {
+      } else {
         await instance.currentUser!.sendEmailVerification();
         MyApp.createSnackBar(context, 'Please verify your email');
       }
     }
-
 
     // navigator push login->main
   }
 
   void signup() {
     Navigator.push(
-
-        context, 
-        MaterialPageRoute(builder: (context) => const signup_route())
-    );
-
+        //context, MaterialPageRoute(builder: (context) => const signup_route()));
+        context,
+        MaterialPageRoute(builder: (context) => const TabPage()));
   }
 
   void reset() {
@@ -120,26 +111,21 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             InputField(
-              hintText: 'Email Address',
-              padding: const EdgeInsets.only(left: 10),
-              margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-              controller: emailController,
-              type: TextInputType.emailAddress
-            ),
+                hintText: 'Email Address',
+                padding: const EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                controller: emailController,
+                type: TextInputType.emailAddress),
             InputField(
-              hintText: 'Password',
-              padding: const EdgeInsets.only(left: 10),
-              margin: const EdgeInsets.fromLTRB(15, 20, 15, 25),
-              isPassword: true,
-              controller: passwordController,
-              type: TextInputType.visiblePassword
-            ),
-
-
+                hintText: 'Password',
+                padding: const EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.fromLTRB(15, 20, 15, 25),
+                isPassword: true,
+                controller: passwordController,
+                type: TextInputType.visiblePassword),
             FilledButton(hintText: const Text('Sign in'), func: signin),
-
-            const Padding(padding: EdgeInsets.only(top:30)),
-           TextButton(
+            const Padding(padding: EdgeInsets.only(top: 30)),
+            TextButton(
               style: TextButton.styleFrom(
                 primary: Colors.black,
               ),
@@ -148,7 +134,6 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: signup,
               child: const Text('Sign up'),
             ),
-
             TextButton(
               style: TextButton.styleFrom(
                 primary: Colors.black,

@@ -18,6 +18,7 @@ class FilledButton extends StatefulWidget {
   @override
   // ignore: no_logic_in_create_state
   State<FilledButton> createState() =>
+      // ignore: no_logic_in_create_state
       _FilledButtonState(hintText, func, isVisible);
 }
 
@@ -34,14 +35,12 @@ class _FilledButtonState extends State<FilledButton> {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
               // Text Color
-              onPrimary:
-                  Colors.white, //Theme.of(context).colorScheme.onPrimary,
+              onPrimary: Colors.white,
               // Box Color
-              primary: Colors.black //Theme.of(context).colorScheme.primary,
-              )
+              primary: Colors.black)
           .copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
       onPressed: func,
       child: hintText,
     );
   }
-
+}
