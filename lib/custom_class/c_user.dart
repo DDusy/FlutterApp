@@ -1,6 +1,6 @@
-class User {
+class CustomUser {
   String name;
-  int age;
+  String email;
 
-  User(this.name, this.age);
+  CustomUser(this.name, this.email);
 }

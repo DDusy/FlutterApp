@@ -2,12 +2,15 @@
 
 import 'package:flutter/material.dart';
 //import 'package:flutter/services.dart';
-import 'package:myflutterapp/custom_class/c_filledbutton.dart';
 
-//import 'signup_route.dart';
+import 'package:myflutterapp/custom_class/c_filledbutton.dart';
 import 'package:myflutterapp/custom_class/c_inputfield.dart';
+import 'package:myflutterapp/custom_class/c_user.dart';
+import 'package:myflutterapp/pages/forgot_password_page.dart';
+
 import 'package:myflutterapp/pages/signup_route.dart';
 import 'package:myflutterapp/main.dart';
+import 'package:myflutterapp/pages/main_page.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:firebase_core/firebase_core.dart';
@@ -69,29 +72,43 @@ class _LoginPageState extends State<LoginPage> {
       bcomplete = false;
     }
 
-    if (bcomplete) {
-      if (instance.currentUser!.emailVerified) {
-        MyApp.createSnackBar(context, 'Hello!');
-        // Navigator push signin->main
-        print(instance.currentUser);
-      } else {
-        await instance.currentUser!.sendEmailVerification();
-        MyApp.createSnackBar(context, 'Please verify your email');
-      }
+
+    if(!bcomplete){
+      return;
     }
 
-    // navigator push login->main
+    if (instance.currentUser!.emailVerified) {
+      String name = instance.currentUser!.displayName.toString();
+      String email = instance.currentUser!.email.toString();
+
+      MyApp.createSnackBar(context, 'Hello!');
+      // Navigator push signin->main
+      Navigator.pushReplacement<void, void>(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) =>
+              MainPage(user: CustomUser(name, email)),
+        ),
+      );
+    } 
+    else {
+      await instance.currentUser!.sendEmailVerification();
+      MyApp.createSnackBar(context, 'Please verify your email');
+    }
   }
 
   void signup() {
-    Navigator.push(
-        //context, MaterialPageRoute(builder: (context) => const signup_route()));
-        context,
-        MaterialPageRoute(builder: (context) => const TabPage()));
+    Navigator.push( 
+        context, 
+        MaterialPageRoute(builder: (context) => const signup_route())
+    );
   }
 
   void reset() {
-    //print(passwordController.text);
+    Navigator.push( 
+        context, 
+        MaterialPageRoute(builder: (context) => const ForgotPasswordPage())
+    );
   }
 
   @override
@@ -117,20 +134,22 @@ class _LoginPageState extends State<LoginPage> {
                 controller: emailController,
                 type: TextInputType.emailAddress),
             InputField(
-                hintText: 'Password',
-                padding: const EdgeInsets.only(left: 10),
-                margin: const EdgeInsets.fromLTRB(15, 20, 15, 25),
-                isPassword: true,
-                controller: passwordController,
-                type: TextInputType.visiblePassword),
-            FilledButton(hintText: const Text('Sign in'), func: signin),
-            const Padding(padding: EdgeInsets.only(top: 30)),
+              hintText: 'Password',
+              padding: const EdgeInsets.only(left: 10),
+              margin: const EdgeInsets.fromLTRB(15, 20, 15, 25),
+              isPassword: true,
+              controller: passwordController,
+              type: TextInputType.visiblePassword
+            ),
+
+            FilledButton(hintText: const Text('Sign in'), func: signin, mainColor: MyApp.mainColor),
+
+            const Padding(padding: EdgeInsets.only(top:30)),
+
             TextButton(
               style: TextButton.styleFrom(
                 primary: Colors.black,
               ),
-              // onPressed: () {
-              // },
               onPressed: signup,
               child: const Text('Sign up'),
             ),
