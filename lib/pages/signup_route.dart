@@ -20,6 +20,7 @@ class signup_route extends StatefulWidget {
 
 class _signup_route extends State<signup_route> {
 
+
   var newuserNameController = TextEditingController();
   var newuserEmailController = TextEditingController();
   var newuserPasswordController = TextEditingController();
@@ -78,6 +79,7 @@ class _signup_route extends State<signup_route> {
   void initState() {
     super.initState();
 
+
     newuserPasswordController.addListener(() {
       setState(() {
         isemptypassword = newuserPasswordController.text.isEmpty;
@@ -94,6 +96,7 @@ class _signup_route extends State<signup_route> {
   }
 
   void signup() async {
+
 
     if(checkController(newuserNameController)){
       MyApp.createSnackBar(context, 'Please enter name');
@@ -131,6 +134,7 @@ class _signup_route extends State<signup_route> {
       Navigator.pop(context);
       setDB();
       instance.currentUser!.updateDisplayName(newuserNameController.text);
+
     }
   }
 
@@ -149,6 +153,7 @@ class _signup_route extends State<signup_route> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: const Text("SignUp"),
       ),

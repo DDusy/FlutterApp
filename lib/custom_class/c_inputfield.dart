@@ -3,11 +3,11 @@ import 'package:myflutterapp/main.dart';
 
 // ignore: must_be_immutable
 class InputField extends StatefulWidget {
-  
   final EdgeInsets padding;
   final EdgeInsets margin;
   final String hintText;
   final TextEditingController controller;
+
   final TextInputType type;
   bool isPassword = false;
   bool isVisible;
@@ -25,12 +25,13 @@ class InputField extends StatefulWidget {
   @override
   // ignore: no_logic_in_create_state
   State<InputField> createState() => _InputFieldState(
+
     padding, margin, hintText, controller, type, isPassword, isVisible
   );
+
 }
 
 class _InputFieldState extends State<InputField> {
-  
   EdgeInsets padding;
   EdgeInsets margin;
   String hintText;
@@ -39,6 +40,7 @@ class _InputFieldState extends State<InputField> {
 
   bool isPassword = false;
   bool isVisible;
+
 
   _InputFieldState(
     this.padding,
@@ -70,26 +72,29 @@ class _InputFieldState extends State<InputField> {
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
-          suffixIcon: isPassword ? InkWell(
-            onTap: () {
-              setState(() {
-                isVisible = !isVisible;
-              });
-            },
-            child: Icon(
-              isVisible ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-              color: const Color.fromARGB(255, 111, 111, 111),
-              size: 22
-            )
-          ) : null,
+          suffixIcon: isPassword
+              ? InkWell(
+                  onTap: () {
+                    setState(() {
+                      isVisible = !isVisible;
+                    });
+                  },
+                  child: Icon(
+                      isVisible
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+                      color: const Color.fromARGB(255, 111, 111, 111),
+                      size: 22))
+              : null,
         ),
         style: const TextStyle(fontSize: 15),
+
         //keyboardType: isVisible ? TextInputType.visiblePassword : TextInputType.emailAddress,
         keyboardType: type,
         cursorColor: Colors.purple,
         // onChanged: (value){
         //   setState(() {
-            
+
         //   });
         // }
       ),

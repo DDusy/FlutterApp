@@ -1,3 +1,10 @@
+#
+/*
+
+#not
+!/lib
+!/ pubspec.yaml
+
 # Miscellaneous
 *.class
 *.log

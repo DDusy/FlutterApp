@@ -39,8 +39,7 @@ class _FilledButtonState extends State<FilledButton> {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
               // Text Color
-              onPrimary:
-                  Colors.white, //Theme.of(context).colorScheme.onPrimary,
+              onPrimary: Colors.white,
               // Box Color
               primary: mainColor//Theme.of(context).colorScheme.primary,
               )
