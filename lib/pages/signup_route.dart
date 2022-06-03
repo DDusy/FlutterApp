@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, unused_local_variable
 
 import 'package:flutter/material.dart';
+import 'package:myflutterapp/custom_class/c_global.dart';
 
 import 'package:myflutterapp/main.dart';
 import 'package:myflutterapp/custom_class/c_inputfield.dart';
@@ -96,18 +97,16 @@ class _signup_route extends State<signup_route> {
   }
 
   void signup() async {
-
-
     if(checkController(newuserNameController)){
-      MyApp.createSnackBar(context, 'Please enter name');
+      service.createSnackBar(context, 'Please enter name');
       return;
     }
     else if(checkController(newuserEmailController)){
-      MyApp.createSnackBar(context, 'Please enter email');
+      service.createSnackBar(context, 'Please enter email');
       return;
     }
     else if(checkController(newuserPasswordController)){
-      MyApp.createSnackBar(context, 'Please enter password');
+      service.createSnackBar(context, 'Please enter password');
       return;
     }
 
@@ -122,7 +121,7 @@ class _signup_route extends State<signup_route> {
       );
     } 
     on FirebaseAuthException catch (e) {
-      MyApp.createSnackBar(context, e.code);
+      service.createSnackBar(context, e.code);
       bcomplete = false;
     }
     catch (e) {
@@ -130,19 +129,23 @@ class _signup_route extends State<signup_route> {
     }
 
     if(bcomplete){
-      MyApp.createSnackBar(context, 'Your Account is created successfully!');
+      service.createSnackBar(context, 'Your Account is created successfully!');
       Navigator.pop(context);
       setDB();
       instance.currentUser!.updateDisplayName(newuserNameController.text);
-
     }
   }
 
   void setDB() async {
     var store = FirebaseFirestore.instance;
+    
+    List<String> favorited = [];
+    Map reserve = Map();
+
     final user = <String, dynamic>{
       "name" : newuserNameController.text,
-      "favoritedList" : [],
+      "favoritedList" : favorited,
+      "reserve" : reserve,
     };
 
     print('await 2 enter');

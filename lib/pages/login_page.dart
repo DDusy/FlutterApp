@@ -1,9 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter/services.dart';
 
 import 'package:myflutterapp/custom_class/c_filledbutton.dart';
+import 'package:myflutterapp/custom_class/c_global.dart';
 import 'package:myflutterapp/custom_class/c_inputfield.dart';
 import 'package:myflutterapp/custom_class/c_user.dart';
 import 'package:myflutterapp/pages/forgot_password_page.dart';
@@ -14,8 +16,7 @@ import 'package:myflutterapp/pages/main_page.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:firebase_core/firebase_core.dart';
-
-import 'package:myflutterapp/pages/acdemey_info_page.dart';
+//import 'package:myflutterapp/pages/acdemey_info_page.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -31,6 +32,8 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isemptyemail = true;
   bool isemptypassword = true;
+
+  CustomUser user = CustomUser('','', [], Map());
 
   //BuildContext _context;
 
@@ -48,10 +51,10 @@ class _LoginPageState extends State<LoginPage> {
 
   void signin() async {
     if (checkController(emailController)) {
-      MyApp.createSnackBar(context, 'Please enter email');
+      service.createSnackBar(context, 'Please enter email');
       return;
     } else if (checkController(passwordController)) {
-      MyApp.createSnackBar(context, 'Please enter password');
+      service.createSnackBar(context, 'Please enter password');
       return;
     }
 
@@ -65,39 +68,65 @@ class _LoginPageState extends State<LoginPage> {
     } on FirebaseAuthException catch (e) {
       // print('enter FirebaseAuthException Catch');
       // print(e.code);
-      MyApp.createSnackBar(context, e.code);
+      service.createSnackBar(context, e.code);
       bcomplete = false;
     } catch (e) {
       // print('Catch');
       bcomplete = false;
     }
 
-
     if(!bcomplete){
       return;
     }
 
     if (instance.currentUser!.emailVerified) {
-      String name = instance.currentUser!.displayName.toString();
+      //String name = instance.currentUser!.displayName.toString();
       String email = instance.currentUser!.email.toString();
 
-      MyApp.createSnackBar(context, 'Hello!');
-      // Navigator push signin->main
+      await getDataByDB(email);
+      service.createSnackBar(context, 'Hello!');
+
+      service.curUser = user;
+
+      //Navigator push signin->main
+
       Navigator.pushReplacement<void, void>(
         context,
         MaterialPageRoute<void>(
-          builder: (BuildContext context) =>
-              MainPage(user: CustomUser(name, email)),
+          builder: (BuildContext context) => MainPage(),
         ),
       );
     } 
     else {
       await instance.currentUser!.sendEmailVerification();
-      MyApp.createSnackBar(context, 'Please verify your email');
+      service.createSnackBar(context, 'Please verify your email');
     }
   }
 
-  void signup() {
+  Future<void> getDataByDB(String email) async{    
+    var store = FirebaseFirestore.instance;
+
+    String name = "";
+    List<String> favorited = [];
+    Map reserve = Map();
+
+    var v = await store.collection('Users').doc(email).get();
+
+    for (var item in await v.get('favorited')) {
+      favorited.add(item);
+    }
+    name = await v.get('name');
+    reserve = await v.get('reserve');
+
+    user.email = email;
+    user.name = name;
+    user.favorited = favorited;
+    user.reserve = reserve;
+
+    return;
+  }
+
+  void signup() { 
     Navigator.push( 
         context, 
         MaterialPageRoute(builder: (context) => const signup_route())

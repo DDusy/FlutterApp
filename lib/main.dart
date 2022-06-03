@@ -1,13 +1,8 @@
-//import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:myflutterapp/pages/main_page.dart';
 import 'firebase_options.dart';
 
 import 'pages/login_page.dart';
-import 'pages/testpage.dart';
-import 'custom_class/c_user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,20 +19,6 @@ class MyApp extends StatelessWidget {
 
   static Color mainColor = Colors.purple;
   static Color subColor = Color.fromARGB(255, 206, 153, 215);
-
-  static void createSnackBar(BuildContext context, String message){
-    final scaffold = ScaffoldMessenger.of(context);
-
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text(message),
-        action: SnackBarAction(
-          label: 'OK',
-          onPressed: scaffold.hideCurrentSnackBar,
-        )
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

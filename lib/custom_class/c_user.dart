@@ -1,6 +1,12 @@
 class CustomUser {
-  String name;
   String email;
+  String name;
+  List<String> favorited;
+  Map reserve;
 
-  CustomUser(this.name, this.email);
+  CustomUser(this.email, this.name, this.favorited, this.reserve);
+
+  void addFavoritedList(String academy) {
+    favorited.add(academy);
+  }
 }

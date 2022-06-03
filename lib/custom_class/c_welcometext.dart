@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 class welcomeText extends StatelessWidget {
 
   final String userName;
-  final String email;
 
-  const welcomeText({Key? key, required this.userName, required this.email}) : super(key: key);
+  const welcomeText({Key? key, required this.userName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class welcomeText extends StatelessWidget {
             ),
             //Divider(height: 3, thickness: 1, color: Color.fromARGB(255, 0, 0, 0)),
             const Padding(padding: EdgeInsets.fromLTRB(4, 10, 0, 0)),
-            Text('your email is $email'),
+            Text('Welcome to Application'),
           ],
         ),
       ),

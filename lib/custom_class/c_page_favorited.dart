@@ -1,31 +1,74 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:myflutterapp/custom_class/c_filledbutton.dart';
+import 'package:myflutterapp/custom_class/c_global.dart';
 
-import 'c_academy.dart';
+import 'c_academybutton.dart';
 
 class FavoritedWidget extends StatefulWidget {
-  const FavoritedWidget({Key? key}) : super(key: key);
+  final bool empty;
+  const FavoritedWidget({Key? key, required this.empty}) : super(key: key);
 
   @override
-  State<FavoritedWidget> createState() => _FavoritedWidgetState();
+  State<FavoritedWidget> createState() => _FavoritedWidgetState(empty);
 }
 
 class _FavoritedWidgetState extends State<FavoritedWidget> {
+
+  bool empty;
+
+  _FavoritedWidgetState(this.empty);
+
+  @override
+  void setState(VoidCallback fn) {
+
+    empty = service.User.favorited.isEmpty;
+
+    super.setState(fn);
+  }
+
+  void addList() {
+    print('asdf');
+    setState(() {
+      service.User.favorited.add('asdf');
+    },);
+  }
+
+  Widget makeViewByList() {
+    if(service.User.favorited.isEmpty) {
+      // return Text('There is no item');
+      // return ListView(
+      //   children: [
+      //     AcademyButton(msg: 'My'),
+      //     AcademyButton(msg: 'Name'),
+      //     AcademyButton(msg: 'Is'),
+      //     AcademyButton(msg: 'GimDonGuk'),
+      //   ],
+      // );
+      return FilledButton(hintText: Text('asdf'), func: addList, mainColor: Colors.purple);
+    }
+    else {
+      print(service.User.favorited);
+      return ListView(
+        children: [
+          AcademyButton(msg: 'Hello'),
+          // AcademyButton(msg: 'My'),
+          // AcademyButton(msg: 'Name'),
+          // AcademyButton(msg: 'Is'),
+          // AcademyButton(msg: 'GimDonGuk'),
+          // AcademyButton(msg: 'GimDonGuk'),
+          // AcademyButton(msg: 'GimDonGuk'),
+          // AcademyButton(msg: 'GimDonGuk'),
+          // AcademyButton(msg: 'GimDonGuk'),
+          // AcademyButton(msg: 'GimDonGuk'),
+          // AcademyButton(msg: 'GimDonGuk'),
+        ],
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        academy_button(msg: 'Hello'),
-        academy_button(msg: 'My'),
-        academy_button(msg: 'Name'),
-        academy_button(msg: 'Is'),
-        academy_button(msg: 'GimDonGuk'),
-        academy_button(msg: 'GimDonGuk'),
-        academy_button(msg: 'GimDonGuk'),
-        academy_button(msg: 'GimDonGuk'),
-        academy_button(msg: 'GimDonGuk'),
-        academy_button(msg: 'GimDonGuk'),
-        academy_button(msg: 'GimDonGuk'),
-      ],
-    );
+    return makeViewByList();
   }
 }

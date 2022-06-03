@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class academy_button extends StatefulWidget {
+class AcademyButton extends StatefulWidget {
 
   final String msg;
 
-  const academy_button({Key? key, required this.msg}) : super(key: key);
+  const AcademyButton({Key? key, required this.msg}) : super(key: key);
 
   @override
-  State<academy_button> createState() => _academy_buttonState(msg);
+  State<AcademyButton> createState() => _AcademyButtonState(msg);
 }
 
-class _academy_buttonState extends State<academy_button> {
+class _AcademyButtonState extends State<AcademyButton> {
 
   String msg;
 
-  _academy_buttonState(this.msg);
+  _AcademyButtonState(this.msg);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class _academy_buttonState extends State<academy_button> {
           children: [
             Padding(
               //padding: const EdgeInsetsDirectional.fromSTEB(12, 8, 12, 0),
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -67,25 +67,7 @@ class _academy_buttonState extends State<academy_button> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
-              child: Column(
-                //mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  // Expanded(
-                  //   child: Padding(
-                  //     padding: EdgeInsetsDirectional.only(bottom: 8),
-                  //     child: Text(
-                  //       '서울특별시 마포구 고산길 156 지하1층 드럼스쿨'
-                  //     ),
-                  //   ),
-                  //),
-                  Text('도로명주소'),
-                  Text('지번주소'),
-                ],
-              ),
-            ),
+            /*
             const Divider(
               height: 3,
               thickness: 1,
@@ -109,6 +91,7 @@ class _academy_buttonState extends State<academy_button> {
                 ],
               ),
             ),
+            */
           ],
         ),
       ),

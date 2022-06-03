@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
+import 'package:myflutterapp/custom_class/c_global.dart';
 
 import '../custom_class/c_filledbutton.dart';
 import '../custom_class/c_inputfield.dart';
@@ -19,7 +20,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   
   void reset() async {
     if(emailController.text.isEmpty){
-      MyApp.createSnackBar(context, 'Please enter email');
+      //MyApp.createSnackBar(context, 'Please enter email');
+      service.createSnackBar(context, 'Please enter email');
       return;
     }
 
@@ -30,7 +32,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       await instance.sendPasswordResetEmail(email: emailController.text);
     } 
     on FirebaseAuthException catch (e) {
-      MyApp.createSnackBar(context, e.code);
+      service.createSnackBar(context, e.code);
       bcomplete = false;
     }
     catch (e) {
@@ -38,7 +40,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     }
 
     if(bcomplete){
-      MyApp.createSnackBar(context, 'Check your email');
+      service.createSnackBar(context, 'Check your email');
       Navigator.pop(context);
     }
   }
