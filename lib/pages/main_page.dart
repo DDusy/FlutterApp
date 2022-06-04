@@ -66,6 +66,7 @@ class _MainPageState extends State<MainPage> {
               // tabbarview
               Flexible(
                   child: TabBarView(
+                    physics: NeverScrollableScrollPhysics(),
                     children: [
                       // tab 1
                       getTab1(),

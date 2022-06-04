@@ -48,7 +48,7 @@ class _FavoritedWidgetState extends State<FavoritedWidget> {
       return FilledButton(hintText: Text('asdf'), func: addList, mainColor: Colors.purple);
     }
     else {
-      print(service.User.favorited);
+      //print(service.User.favorited);
       return ListView(
         children: [
           AcademyButton(msg: 'Hello'),
