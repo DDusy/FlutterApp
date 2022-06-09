@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:myflutterapp/pages/acdemey_info_page.dart';
 
 class academy_button extends StatefulWidget {
-
   final String msg;
 
   const academy_button({Key? key, required this.msg}) : super(key: key);
@@ -11,25 +11,29 @@ class academy_button extends StatefulWidget {
 }
 
 class _academy_buttonState extends State<academy_button> {
-
   String msg;
 
   _academy_buttonState(this.msg);
+
+  void Informpage() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const TabPage()));
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        print(msg);
+        Informpage();
       },
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Color.fromARGB(255, 206, 153, 215), width: 2),
+          border:
+              Border.all(color: Color.fromARGB(255, 206, 153, 215), width: 2),
           borderRadius: BorderRadius.circular(15),
           shape: BoxShape.rectangle,
         ),
         margin: const EdgeInsets.all(10),
-
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,12 +47,12 @@ class _academy_buttonState extends State<academy_button> {
                   Container(
                     width: 50,
                     height: 50,
-                    padding: EdgeInsets.only(left:10),
+                    padding: EdgeInsets.only(left: 10),
                     clipBehavior: Clip.antiAlias,
                     decoration: const BoxDecoration(
                       shape: BoxShape.rectangle,
                     ),
-                    child : Image.asset('icon.png'),
+                    child: Image.asset('assets/icon.png'),
                   ),
                   Column(
                     mainAxisSize: MainAxisSize.max,
@@ -87,23 +91,26 @@ class _academy_buttonState extends State<academy_button> {
               ),
             ),
             const Divider(
-              height: 3,
-              thickness: 1,
-              color: Color.fromARGB(255, 206, 153, 215)
-            ),
+                height: 3,
+                thickness: 1,
+                color: Color.fromARGB(255, 206, 153, 215)),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
               child: Row(
                 children: const [
-                  Icon(Icons.favorite_rounded, color: Color.fromARGB(255, 206, 153, 215),),
+                  Icon(
+                    Icons.favorite_rounded,
+                    color: Color.fromARGB(255, 206, 153, 215),
+                  ),
                   Padding(
-                    padding: EdgeInsets.only(left:10),
+                    padding: EdgeInsets.only(left: 10),
                     child: Text('좋아요 수'),
                   ),
-                  Padding(padding: EdgeInsets.only(left:20)),
-                  Icon(Icons.mode_comment_outlined, color: Color.fromARGB(255, 206, 153, 215)),
+                  Padding(padding: EdgeInsets.only(left: 20)),
+                  Icon(Icons.mode_comment_outlined,
+                      color: Color.fromARGB(255, 206, 153, 215)),
                   Padding(
-                    padding: EdgeInsets.only(left:10),
+                    padding: EdgeInsets.only(left: 10),
                     child: Text('리뷰 수'),
                   ),
                 ],

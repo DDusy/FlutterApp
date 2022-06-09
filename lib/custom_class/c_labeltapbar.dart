@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-class LabelTabbar extends StatefulWidget {
+class LabelTapbar extends StatefulWidget {
   final Text label;
   final double height;
 
-  const LabelTabbar({Key? key, required this.label, required this.height})
+  const LabelTapbar({Key? key, required this.label, required this.height})
       : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api, no_logic_in_create_state
-  _LabelTabbarState createState() => _LabelTabbarState(label, height);
+  _LabelTapbarState createState() => _LabelTapbarState(label, height);
 }
 
-class _LabelTabbarState extends State<LabelTabbar> {
+class _LabelTapbarState extends State<LabelTapbar> {
   Text label;
   double height;
 
-  _LabelTabbarState(this.label, this.height);
+  _LabelTapbarState(this.label, this.height);
 
   @override
   Widget build(BuildContext context) {

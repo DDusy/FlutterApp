@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 
 class TabInform extends StatefulWidget {
   
@@ -7,25 +11,106 @@ class TabInform extends StatefulWidget {
   
 
   @override
-  _TabInformState createState() => _TabInformState();
+  State<TabInform> createState() => _TabInformState();
 }
 
-class _TabInformState extends State<TabInform>{
-
-  
+class _TabInformState extends State<TabInform>
+{
+  Completer<NaverMapController> _controller = Completer();
+  MapType _mapType = MapType.Basic;
   _TabInformState();
+  
+    void onMapCreated(NaverMapController controller) {
+    if (_controller.isCompleted) _controller = Completer();
+    _controller.complete(controller);
+  }
+
+  List<Marker> _markers = [];
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      OverlayImage.fromAssetImage(
+        assetName: 'marker.png',
+        devicePixelRatio: window.devicePixelRatio,
+      ).then((image) {
+        setState(() {
+          _markers.add(Marker(
+              markerId: 'id',
+              position: LatLng(37.563600, 126.962370),
+              captionText: "커스텀 아이콘",
+              captionColor: Colors.indigo,
+              captionTextSize: 20.0,
+              alpha: 0.8,
+              captionOffset: 30,
+              icon: image,
+              anchor: AnchorPoint(0.5, 1),
+              width: 45,
+              height: 45,
+              infoWindow: '인포 윈도우'));
+        });
+      });
+    });
+    super.initState();
+  }
+
+ 
+  @override
   Widget build(BuildContext context) {
-    return  Container(
-                  color: Colors.green[200],
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'inform',
-                    style: TextStyle(
-                      fontSize: 30,
-                    ),
-                  ),
-                );
+    return SingleChildScrollView
+    (scrollDirection:Axis.vertical,
+      child: Column(
+        children:<Widget>[
+          Text('이름',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),
+          ),
+          Text('학원이름',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          )),
+          Text('과목',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),),
+          Text('과목이름',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),),
+          Text('영업시간',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),),
+          Text('10:00 ~ 22:00',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),), 
+          Text('연습실',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),),
+         SizedBox(
+                  width: 100.0,
+                  height: 100.0,
+                  child: NaverMap(
+          initialCameraPosition: CameraPosition(
+              target: LatLng(37.566570, 126.978442),
+              zoom: 17,
+            ),
+          onMapCreated: onMapCreated,
+          mapType: _mapType,
+          markers: _markers
+        )),
+      ],
+      ),
+    );
   }
 }

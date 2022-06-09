@@ -1,35 +1,30 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class ImageSliderPage extends StatefulWidget {
   
-  final Set<Image> imagelist;
-  final double _height;
+   final Set<Image> imagelist;
+   final double height;
 
-  ImageSliderPage({
-    Key? key,
-    required this.imagelist,
-    required this._height
-    }) 
+   const ImageSliderPage({ Key? key,required this.imagelist,required this.height}) 
     : super(key: key);
 
   
   @override
-  _ImageSliderPageState createState() => _ImageSliderPageState(imagelist,_height);
-  
+  State<ImageSliderPage> createState() => _ImageSliderPageState(imagelist,height);
 }
 
 class _ImageSliderPageState extends State<ImageSliderPage> {
-  final  Set<Image> imagelist;
-  final double _height;
+  Set<Image> imagelist;
+  double height;
 
-  _ImageSliderPageState(this.imagelist,this._height);
+  _ImageSliderPageState(this.imagelist,this.height);
 
   @override
   Widget build(BuildContext context) {
        return CarouselSlider(
           options: CarouselOptions(
-            height : _height,
+            height : height,
             autoPlay: true),
           items: imagelist.map((item) {
             return Builder(builder: (BuildContext context) 

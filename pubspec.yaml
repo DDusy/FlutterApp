@@ -38,6 +38,8 @@ dependencies:
   firebase_auth: ^3.3.18
   carousel_slider: ^4.1.1
   cloud_firestore: ^3.1.17
+  flutter_naver_map: ^0.10.5
+  
 
 dev_dependencies:
   flutter_test:
