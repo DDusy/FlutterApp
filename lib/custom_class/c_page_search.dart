@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:myflutterapp/custom_class/c_academy_simple.dart';
 import 'package:myflutterapp/custom_class/c_academybutton.dart';
+import 'package:myflutterapp/custom_class/c_debouncer.dart';
 import 'package:myflutterapp/custom_class/c_inputfield.dart';
 
 class SearchWidget extends StatefulWidget {
@@ -16,16 +19,21 @@ class _SearchWidgetState extends State<SearchWidget> {
   TextEditingController searchController = TextEditingController();
   List<SimpleAcademy> academies = [];
   List<AcademyButton> buttons = [];
+  final Debouncer _debouncer = Debouncer(1000);
 
   @override
   void initState() {
+
+    searchController.addListener(onSearchChanged);
+
     super.initState();
   }
 
-  @override
-  void setState(VoidCallback fn) {
+  @override void dispose() {
 
-    super.setState(fn);
+    searchController.dispose();
+
+    super.dispose();
   }
 
   Future<String> getAcademyData() async {
@@ -34,11 +42,13 @@ class _SearchWidgetState extends State<SearchWidget> {
       var v = value;
 
       for (var item in v.docs) {
+        var name = item.get('Name');
         var members = item.get('Members');
         var reserve = item.get('Reserve');
         var settings = item.get('Settings');
+        var searchlist = item.get('SearchList');
 
-        academies.add(SimpleAcademy(members, reserve, settings));
+        academies.add(SimpleAcademy(name, members, reserve, settings, searchlist));
       }
 
       setButtonList();
@@ -47,10 +57,8 @@ class _SearchWidgetState extends State<SearchWidget> {
   }
 
   void setButtonList() {
-    for(int i = 0; i<3; ++i){
-      for(var item in academies) {
-        buttons.add(getAcademyButton(item.settings['Name']));
-      }
+    for (var item in academies) {
+      buttons.add(getAcademyButton(item.name));
     }
   }
 
@@ -60,6 +68,44 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   AcademyButton getAcademyButton(String name) {
     return AcademyButton(msg: name);
+  }
+
+  void onSearchChanged() {
+
+    print("Enter onSearchChanged");
+
+    _debouncer.run( () => makeQuery(searchController.text) );
+  }
+
+  Future<void> makeQuery(String text) async { 
+
+    if (text == "")
+      return;
+
+
+    print("Enter onSearchChanged");
+
+    var store = FirebaseFirestore.instance;
+
+    //String queryText = "%" + text + "%";
+
+    //var query = await store.collection("Academies").startAt(queryText);
+    
+    //var query = await store.collection("Academies").get();
+    // for (var item in query.docs) {
+    //   print(item.data()["Settings"]);
+    // }
+
+    var query = await store.collection("Academies").where("SearchList", arrayContains: text).get().then((value) {
+      if(value.docs.isEmpty == true) {
+        print("value is null");
+        return;
+      }
+
+      for (var item in value.docs) {
+        print(item.data()["Name"]);
+      }
+    },);
   }
 
   @override
@@ -75,7 +121,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                 margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
                 hintText: 'Search Academy name',
                 controller: searchController,
-                type: TextInputType.text
+                type: TextInputType.text,
               ),
               const Padding(padding: EdgeInsets.only(top: 5)),
               const Divider(

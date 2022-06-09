@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:myflutterapp/custom_class/c_academy_simple.dart';
 //import 'package:flutter/services.dart';
 
 import 'package:myflutterapp/custom_class/c_filledbutton.dart';
@@ -103,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> getDataByDB(String email) async{    
+  Future<void> getDataByDB(String email) async{
     var store = FirebaseFirestore.instance;
 
     String name = "";
@@ -112,11 +113,11 @@ class _LoginPageState extends State<LoginPage> {
 
     var v = await store.collection('Users').doc(email).get();
 
-    for (var item in await v.get('favorited')) {
+    for (var item in await v.get('Favorited')) {
       favorited.add(item);
     }
-    name = await v.get('name');
-    reserve = await v.get('reserve');
+    name = await v.get('Name');
+    reserve = await v.get('Reserve');
 
     user.email = email;
     user.name = name;
@@ -124,6 +125,65 @@ class _LoginPageState extends State<LoginPage> {
     user.reserve = reserve;
 
     return;
+  }
+
+  Future<void> saveAcademyDB() async {
+
+    String academyName = "오드럼의 드럼스쿨";
+    var members = Map();
+    var reserve = Map();
+    var settings = Map();
+    var searchList = [];
+
+    members["Name"] = "김동욱";
+    members["Auth"] = 3;
+    members["Denied"] = "99999999";
+    members["Warning"] = 0;
+    members["Reserve"] = ["20220611_1500_001", "20220611_1600_002"];
+
+    reserve["20220611_1500_001"] = "김동욱";
+    reserve["20220611_1500_002"] = "김동욱";
+
+    settings["Open"] = 6;
+    settings["Close"] = 23;
+    settings["Rooms"] = 2;
+    settings["Subject"] = "드럼";
+
+    int len = academyName.length;
+    for(int i = 0; i < len; ++i) {
+      for(int j = 1; j < len - i + 1; ++j) {
+        // first 0 ~ len-1 _ 1 char
+        // second 0 ~ len-2 _ 2 char
+        // .....
+        // last all characters
+        // print(academyName.substring(j-1, j + i));
+        searchList.add(academyName.substring(j-1, j + i));
+      }
+    }
+
+    SimpleAcademy academy = SimpleAcademy(
+      academyName, members, reserve, settings, searchList
+    );
+
+    /*
+    CustomUser my = CustomUser(
+      "dkdnb@naver.com",
+      "김성은",
+      [],
+      Map()
+    );
+    */
+
+    var store = FirebaseFirestore.instance;
+
+    // await store.collection("Academies").doc(academyName).set(academy.toJson());
+    await store.collection("Academies").doc(academyName).update(academy.toJson());
+
+    //await store.collection("Users").doc(my.email).update(my.toJson());
+
+    // FirebaseAuth.instance.currentUser!.updateDisplayName("김동욱");
+
+    print("success");
   }
 
   void signup() { 
@@ -157,18 +217,19 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             InputField(
-                hintText: 'Email Address',
-                padding: const EdgeInsets.only(left: 10),
-                margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-                controller: emailController,
-                type: TextInputType.emailAddress),
+              hintText: 'Email Address',
+              padding: const EdgeInsets.only(left: 10),
+              margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+              controller: emailController,
+              type: TextInputType.emailAddress,
+            ),
             InputField(
               hintText: 'Password',
               padding: const EdgeInsets.only(left: 10),
               margin: const EdgeInsets.fromLTRB(15, 20, 15, 25),
               isPassword: true,
               controller: passwordController,
-              type: TextInputType.visiblePassword
+              type: TextInputType.visiblePassword,
             ),
 
             FilledButton(hintText: const Text('Sign in'), func: signin, mainColor: MyApp.mainColor),
@@ -188,6 +249,13 @@ class _LoginPageState extends State<LoginPage> {
               ),
               onPressed: reset,
               child: const Text('Forgot Password'),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Colors.black,
+              ),
+              onPressed: saveAcademyDB,
+              child: const Text('DB Test Button'),
             ),
           ],
         ),

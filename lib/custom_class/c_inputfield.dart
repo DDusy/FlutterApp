@@ -7,8 +7,8 @@ class InputField extends StatefulWidget {
   final EdgeInsets margin;
   final String hintText;
   final TextEditingController controller;
-
   final TextInputType type;
+
   bool isPassword = false;
   bool isVisible;
 
@@ -25,7 +25,6 @@ class InputField extends StatefulWidget {
   @override
   // ignore: no_logic_in_create_state
   State<InputField> createState() => _InputFieldState(
-
     padding, margin, hintText, controller, type, isPassword, isVisible
   );
 
@@ -41,7 +40,6 @@ class _InputFieldState extends State<InputField> {
   bool isPassword = false;
   bool isVisible;
 
-
   _InputFieldState(
     this.padding,
     this.margin,
@@ -49,8 +47,9 @@ class _InputFieldState extends State<InputField> {
     this.controller,
     this.type,
     this.isPassword,
-    this.isVisible);
-
+    this.isVisible,
+  );
+  
   @override
   Widget build(BuildContext context) {
     return Container(

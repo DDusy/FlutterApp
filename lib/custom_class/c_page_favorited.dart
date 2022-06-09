@@ -51,17 +51,7 @@ class _FavoritedWidgetState extends State<FavoritedWidget> {
       //print(service.User.favorited);
       return ListView(
         children: [
-          AcademyButton(msg: 'Hello'),
-          // AcademyButton(msg: 'My'),
-          // AcademyButton(msg: 'Name'),
-          // AcademyButton(msg: 'Is'),
-          // AcademyButton(msg: 'GimDonGuk'),
-          // AcademyButton(msg: 'GimDonGuk'),
-          // AcademyButton(msg: 'GimDonGuk'),
-          // AcademyButton(msg: 'GimDonGuk'),
-          // AcademyButton(msg: 'GimDonGuk'),
-          // AcademyButton(msg: 'GimDonGuk'),
-          // AcademyButton(msg: 'GimDonGuk'),
+          AcademyButton(msg: service.User.favorited[0]),
         ],
       );
     }

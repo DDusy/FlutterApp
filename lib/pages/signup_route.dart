@@ -165,32 +165,32 @@ class _signup_route extends State<signup_route> {
           padding: const EdgeInsets.only(top: 50),
           child:
               Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            InputField(
-              hintText: 'name',
-              padding: const EdgeInsets.only(left: 10),
-              margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-              controller: newuserNameController,
-              type: TextInputType.text,
-            ),
+              InputField(
+                hintText: 'name',
+                padding: const EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                controller: newuserNameController,
+                type: TextInputType.text,
+              ),
 
             // Email Address
-            InputField(
-              hintText: 'Email Address',
-              padding: const EdgeInsets.only(left: 10),
-              margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-              controller: newuserEmailController,
-              type: TextInputType.emailAddress,
-            ),
+              InputField(
+                hintText: 'Email Address',
+                padding: const EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                controller: newuserEmailController,
+                type: TextInputType.emailAddress,
+              ),
 
             // Password
-            InputField(
-              hintText: 'Password',
-              padding: const EdgeInsets.only(left: 10),
-              margin: const EdgeInsets.fromLTRB(15, 20, 15, 5),
-              isPassword: true,
-              controller: newuserPasswordController,
-              type: TextInputType.visiblePassword
-            ),
+              InputField(
+                hintText: 'Password',
+                padding: const EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.fromLTRB(15, 20, 15, 5),
+                isPassword: true,
+                controller: newuserPasswordController,
+                type: TextInputType.visiblePassword,
+              ),
 
             SizedBox(
               width: 200,
