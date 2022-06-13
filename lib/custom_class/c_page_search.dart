@@ -21,6 +21,8 @@ class _SearchWidgetState extends State<SearchWidget> {
   List<AcademyButton> buttons = [];
   final Debouncer _debouncer = Debouncer(1000);
 
+  bool isSearch = false;
+
   @override
   void initState() {
 
@@ -29,13 +31,15 @@ class _SearchWidgetState extends State<SearchWidget> {
     super.initState();
   }
 
-  @override void dispose() {
+  @override
+  void dispose() {
 
     searchController.dispose();
 
     super.dispose();
   }
 
+/*
   Future<String> getAcademyData() async {
     var store = FirebaseFirestore.instance;
     var snapshot = await store.collection('Academies').get().then((value) {
@@ -55,10 +59,11 @@ class _SearchWidgetState extends State<SearchWidget> {
     });
     return Future(() => 'Complete');
   }
+*/
 
   void setButtonList() {
     for (var item in academies) {
-      buttons.add(getAcademyButton(item.name));
+      buttons.add(getAcademyButton(item));
     }
   }
 
@@ -66,46 +71,52 @@ class _SearchWidgetState extends State<SearchWidget> {
     return ListView(children: buttons,);
   }
 
-  AcademyButton getAcademyButton(String name) {
-    return AcademyButton(msg: name);
+  AcademyButton getAcademyButton(SimpleAcademy academy) {
+    return AcademyButton(name: academy.name, subject: academy.settings["Subject"], msg: academy.name,);
   }
 
   void onSearchChanged() {
 
     print("Enter onSearchChanged");
 
-    _debouncer.run( () => makeQuery(searchController.text) );
+    //_debouncer.run( () => makeQuery() );
+    _debouncer.run(() {
+      setState(() {
+        isSearch = searchController.text.isNotEmpty;
+      });
+    },);
   }
 
-  Future<void> makeQuery(String text) async { 
+  Future<String> makeQuery() async {
+
+    String text = searchController.text;
 
     if (text == "")
-      return;
+      return Future(() => 'TextValue Is Empty');
 
-
-    print("Enter onSearchChanged");
+    print("Enter makeQuery");
 
     var store = FirebaseFirestore.instance;
+    bool flag = true;
+    var query = await store.collection('Academies').where('SearchList', arrayContains: text).get().then((value) {
 
-    //String queryText = "%" + text + "%";
+      academies.clear();
+      buttons.clear();
 
-    //var query = await store.collection("Academies").startAt(queryText);
-    
-    //var query = await store.collection("Academies").get();
-    // for (var item in query.docs) {
-    //   print(item.data()["Settings"]);
-    // }
-
-    var query = await store.collection("Academies").where("SearchList", arrayContains: text).get().then((value) {
       if(value.docs.isEmpty == true) {
-        print("value is null");
-        return;
+        flag = false;
+        return;// Future(() => 'ResultValue Is Null');
       }
 
       for (var item in value.docs) {
-        print(item.data()["Name"]);
+        SimpleAcademy academy = SimpleAcademy.fromJson(item.data());
+        academies.add(academy);
       }
-    },);
+
+      setButtonList();
+    });
+
+    return Future(() => flag.toString() );
   }
 
   @override
@@ -135,16 +146,19 @@ class _SearchWidgetState extends State<SearchWidget> {
         ),
         Flexible(
           flex:9, 
-          child : FutureBuilder(
-            future : getAcademyData(),
+          child : isSearch == false ? Text("Please Search") : FutureBuilder(
+            future : makeQuery(),
             builder : (BuildContext context, AsyncSnapshot snapshot) {
               if(snapshot.hasData == false) {
+                print("enter1");
                 return CircularProgressIndicator();
               }
               else if(snapshot.hasError) {
+                print("enter2");
                 return Text('error');
               }
               else {
+                print(buttons.length);
                 return getList();
               }      
             },

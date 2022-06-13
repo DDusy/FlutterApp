@@ -3,6 +3,7 @@ import 'package:myflutterapp/custom_class/c_global.dart';
 
 //import 'package:myflutterapp/custom_class/c_academy.dart';
 import 'package:myflutterapp/custom_class/c_page_favorited.dart';
+import 'package:myflutterapp/custom_class/c_page_privacy.dart';
 import 'package:myflutterapp/custom_class/c_page_search.dart';
 import 'package:myflutterapp/custom_class/c_welcometext.dart';
 import 'package:myflutterapp/custom_class/c_user.dart';
@@ -45,6 +46,10 @@ class _MainPageState extends State<MainPage> {
     return SearchWidget();
   }
 
+  Widget getTab3() {
+    return PrivacyWidget();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -69,14 +74,15 @@ class _MainPageState extends State<MainPage> {
                     physics: NeverScrollableScrollPhysics(),
                     children: [
                       // tab 1
-                      getTab1(),
+                      getTab3(),
 
                       // tab2
                       //Text('search page'),
                       getTab2(),
 
                       // tab3
-                      Text('privacy page'),
+                      //Text('privacy page'),
+                      getTab3(),
                     ],
                   ),
                   flex: 10),

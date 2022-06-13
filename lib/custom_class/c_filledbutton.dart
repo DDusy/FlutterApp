@@ -6,6 +6,10 @@ class FilledButton extends StatefulWidget {
   final Text hintText;
   final VoidCallback func;
   final Color mainColor;
+  
+  double width;
+  double height;
+  Alignment alignment;
 
   bool enabledbutton = false;
   bool isVisible;
@@ -16,13 +20,16 @@ class FilledButton extends StatefulWidget {
       required this.func,
       required this.mainColor,
       this.enabledbutton = false,
-      this.isVisible = false})
+      this.isVisible = false,
+      this.width = 80,
+      this.height = 40,
+      this.alignment = Alignment.center})
       : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
   State<FilledButton> createState() =>
-      _FilledButtonState(hintText, func, mainColor, isVisible);
+      _FilledButtonState(hintText, func, mainColor, isVisible, width, height, alignment);
 }
 
 class _FilledButtonState extends State<FilledButton> {
@@ -32,20 +39,36 @@ class _FilledButtonState extends State<FilledButton> {
 
   bool isVisible;
 
-  _FilledButtonState(this.hintText, this.func, this.mainColor, this.isVisible);
+  double width;
+  double height;
+  Alignment alignment;
+
+  _FilledButtonState(
+    this.hintText,
+    this.func,
+    this.mainColor,
+    this.isVisible,
+    this.width,
+    this.height,
+    this.alignment
+  );
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-              // Text Color
-              onPrimary: Colors.white,
-              // Box Color
-              primary: mainColor//Theme.of(context).colorScheme.primary,
-              )
-          .copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
-      onPressed: func,
-      child: hintText,
+    return SizedBox(
+      width: width,
+      height : height,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          // Text Color
+          onPrimary: Colors.white,
+          // Box Color
+          primary: mainColor,//Theme.of(context).colorScheme.primary,
+          alignment: alignment,
+        ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+        onPressed: func,
+        child: hintText,
+      ),
     );
   }
 }

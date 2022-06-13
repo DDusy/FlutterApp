@@ -2,25 +2,33 @@ import 'package:flutter/material.dart';
 
 class AcademyButton extends StatefulWidget {
 
+  final String name;
+  final String subject;
   final String msg;
 
-  const AcademyButton({Key? key, required this.msg}) : super(key: key);
+  const AcademyButton({
+    Key? key, 
+    required this.name,
+    required this.subject,
+    required this.msg}) : super(key: key);
 
   @override
-  State<AcademyButton> createState() => _AcademyButtonState(msg);
+  State<AcademyButton> createState() => _AcademyButtonState(name, subject, msg);
 }
 
 class _AcademyButtonState extends State<AcademyButton> {
 
+  String academyName;
+  String subject;
   String msg;
 
-  _AcademyButtonState(this.msg);
+  _AcademyButtonState(this.academyName, this.subject, this.msg);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        print(msg);
+        print("Navigator Push Academy $msg Page");
       },
       child: Container(
         decoration: BoxDecoration(
@@ -53,14 +61,14 @@ class _AcademyButtonState extends State<AcademyButton> {
                   Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(14, 0, 0, 0),
-                        child: Text('학원이름'),
+                        padding: const EdgeInsetsDirectional.fromSTEB(14, 0, 0, 0),
+                        child: Text(academyName),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(14, 0, 0, 0),
-                        child: Text('과목'),
+                        padding: const EdgeInsetsDirectional.fromSTEB(14, 0, 0, 0),
+                        child: Text(subject),
                       ),
                     ],
                   ),

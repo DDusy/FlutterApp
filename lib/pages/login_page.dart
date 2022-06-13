@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:myflutterapp/custom_class/c_academy_simple.dart';
@@ -129,25 +127,25 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> saveAcademyDB() async {
 
-    String academyName = "오드럼의 드럼스쿨";
+    String academyName = "임시학원3";
     var members = Map();
+    var member = Map();
     var reserve = Map();
     var settings = Map();
     var searchList = [];
 
-    members["Name"] = "김동욱";
-    members["Auth"] = 3;
-    members["Denied"] = "99999999";
-    members["Warning"] = 0;
-    members["Reserve"] = ["20220611_1500_001", "20220611_1600_002"];
+    member["Name"] = "긴쥬횬";
+    member["Auth"] = 3;
+    member["Denied"] = "99999999";
+    member["Warning"] = 0;
+    member["Reserve"] = [];
 
-    reserve["20220611_1500_001"] = "김동욱";
-    reserve["20220611_1500_002"] = "김동욱";
+    members[member["Name"]] = member;
 
-    settings["Open"] = 6;
-    settings["Close"] = 23;
-    settings["Rooms"] = 2;
-    settings["Subject"] = "드럼";
+    settings["Open"] = 9;
+    settings["Close"] = 18;
+    settings["Rooms"] = 1;
+    settings["Subject"] = "보컬";
 
     int len = academyName.length;
     for(int i = 0; i < len; ++i) {
@@ -176,14 +174,12 @@ class _LoginPageState extends State<LoginPage> {
 
     var store = FirebaseFirestore.instance;
 
-    // await store.collection("Academies").doc(academyName).set(academy.toJson());
+    //await store.collection("Academies").doc(academyName).set(academy.toJson());
     await store.collection("Academies").doc(academyName).update(academy.toJson());
 
     //await store.collection("Users").doc(my.email).update(my.toJson());
 
     // FirebaseAuth.instance.currentUser!.updateDisplayName("김동욱");
-
-    print("success");
   }
 
   void signup() { 
