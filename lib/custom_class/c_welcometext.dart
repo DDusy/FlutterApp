@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class welcomeText extends StatelessWidget {
+class WelcomeText extends StatelessWidget {
 
   final String userName;
 
-  const welcomeText({Key? key, required this.userName}) : super(key: key);
+  const WelcomeText({Key? key, required this.userName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class welcomeText extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
+                const Text(
                   'Hello',
                   style: TextStyle(
                     fontSize: 30,
@@ -32,7 +32,7 @@ class welcomeText extends StatelessWidget {
                 const Padding(padding: EdgeInsets.only(left: 4)),
                 Text(
                   userName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 25,
                     color: Colors.purple,//Theme.of(context).primaryColor,
                   ),
@@ -41,7 +41,7 @@ class welcomeText extends StatelessWidget {
             ),
             //Divider(height: 3, thickness: 1, color: Color.fromARGB(255, 0, 0, 0)),
             const Padding(padding: EdgeInsets.fromLTRB(4, 10, 0, 0)),
-            Text('Welcome to Application'),
+            const Text('Welcome to Application'),
           ],
         ),
       ),

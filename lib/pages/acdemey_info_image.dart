@@ -4,23 +4,23 @@ import 'package:flutter/material.dart';
 class ImageSliderPage extends StatefulWidget {
   
   final Set<Image> imagelist;
-  final double _height;
+  final double height;
 
   ImageSliderPage({
     Key? key,
     required this.imagelist,
-    required this._height
+    required this.height
     }) 
     : super(key: key);
 
   
   @override
-  _ImageSliderPageState createState() => _ImageSliderPageState(imagelist,_height);
+  _ImageSliderPageState createState() => _ImageSliderPageState(imagelist,height);
   
 }
 
 class _ImageSliderPageState extends State<ImageSliderPage> {
-  final  Set<Image> imagelist;
+  final Set<Image> imagelist;
   final double _height;
 
   _ImageSliderPageState(this.imagelist,this._height);

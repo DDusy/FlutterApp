@@ -4,7 +4,6 @@ import 'package:myflutterapp/custom_class/c_global.dart';
 
 import '../custom_class/c_filledbutton.dart';
 import '../custom_class/c_inputfield.dart';
-import '../main.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
@@ -48,7 +47,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Forgot Password')),
+      appBar: AppBar(
+        title: Text('Forgot Password'),
+        backgroundColor: Colors.purple,
+      ),
       body: Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.only(top:50),

@@ -17,15 +17,15 @@ class _TabInformState extends State<TabInform>{
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
-                  color: Colors.green[200],
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'inform',
-                    style: TextStyle(
-                      fontSize: 30,
-                    ),
-                  ),
-                );
+    return Container(
+      color: Colors.green[200],
+      alignment: Alignment.center,
+      child: const Text(
+        'inform',
+        style: TextStyle(
+          fontSize: 30,
+        ),
+      ),
+    );
   }
 }

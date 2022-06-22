@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   static Color mainColor = Colors.purple;
-  static Color subColor = Color.fromARGB(255, 206, 153, 215);
+  static Color subColor = const Color.fromARGB(255, 206, 153, 215);
 
   @override
   Widget build(BuildContext context) {

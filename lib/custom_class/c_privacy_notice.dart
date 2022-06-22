@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:myflutterapp/custom_class/c_global.dart';
 import 'package:myflutterapp/custom_class/c_notice.dart';
 
 class NoticeWidget extends StatefulWidget {
@@ -18,8 +19,9 @@ class _NoticeWidgetState extends State<NoticeWidget> {
     for(var item in notices) {
       tiles.add(ExpansionTile(
         title: Text(item.head),
-        subtitle: Text(item.date.toDate().toString()),
-        textColor: Color.fromARGB(255, 222, 167, 232),
+        subtitle: Text(service.getDateString(item.date.toDate())),
+        textColor: const Color.fromARGB(255, 222, 167, 232),
+        iconColor: const Color.fromARGB(255, 222, 167, 232),
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,7 +32,7 @@ class _NoticeWidgetState extends State<NoticeWidget> {
         ],
       ));
 
-      tiles.add(Divider(color: Colors.grey, height: 1, thickness: 3,));
+      tiles.add(const Divider(color: Color.fromARGB(255, 222, 167, 232), height: 1, thickness: 2,));
     }
   }
 
@@ -39,13 +41,10 @@ class _NoticeWidgetState extends State<NoticeWidget> {
     Notice notice;
 
     var store = FirebaseFirestore.instance;
-    var query = await store.collection("Notice").orderBy("TimeStamp", descending: true).get().then((value) {
+    await store.collection("Notice").orderBy("TimeStamp", descending: true).get().then((value) {
       for(var item in value.docs) {
-        notice = Notice(
-          item.data()["TimeStamp"],
-          item.id,
-          item.data()["NoticeBody"]
-        );
+        notice = Notice.fromJson(item.data());
+
         notices.add(notice);
       }
 
@@ -57,23 +56,25 @@ class _NoticeWidgetState extends State<NoticeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getNotice(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if(snapshot.hasData == false) {
-          return const Text("Loading");
-        }
-        else if(snapshot.hasError) { 
-          return const Text("Error");
-        }
-        else {
-          return Scaffold(
-            body: ListView(
-              children: tiles
-            )
-          );
-        }
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("공지사항"),
+        backgroundColor: Colors.purple,
+      ),
+      body: FutureBuilder(
+        future: getNotice(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if(snapshot.hasData == false) {
+            return const Text("Loading");
+          }
+          else if(snapshot.hasError) { 
+            return const Text("Error");
+          }
+          else {
+            return ListView(children: tiles,);
+          }
+        },
+      )
     );
   }
 }

@@ -1,4 +1,4 @@
-class SimpleAcademy {
+class AcademyData {
 
   String name;
   dynamic members;
@@ -6,7 +6,7 @@ class SimpleAcademy {
   dynamic settings;
   dynamic searchlist;
 
-  SimpleAcademy(this.name, this.members, this.reserve, this.settings, this.searchlist);
+  AcademyData(this.name, this.members, this.reserve, this.settings, this.searchlist);
 
   Map<String, dynamic> toJson () => {
     'Name' : name,
@@ -16,7 +16,7 @@ class SimpleAcademy {
     'SearchList' : searchlist,
   };
 
-  SimpleAcademy.fromJson(Map<String, dynamic> json)
+  AcademyData.fromJson(Map<String, dynamic> json)
     : name = json['Name'],
       members = json['Members'],
       reserve = json['Reserve'],

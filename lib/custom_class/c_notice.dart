@@ -7,12 +7,14 @@ class Notice {
 
   Notice(this.date, this.head, this.body);
 
-  // Map<String, String> toJson () => {
-  //   'Date' : date,
-  //   'Notice' : notice
-  // };
+  Map<String, dynamic> toJson () => {
+    "TimeStamp" : date,
+    "NoticeHead" : head,
+    "NoticeBody" : body,
+  };
 
-  // Notice.fromJson(Map<String, String> json)
-  //   : date = json['Date'],
-  //     notice = json['Notice'];
+  Notice.fromJson(Map<String, dynamic> json)
+    : date = json["TimeStamp"],
+      head = json["NoticeHead"],
+      body = json["NoticeBody"];
 }

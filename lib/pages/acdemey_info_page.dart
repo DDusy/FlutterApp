@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:myflutterapp/custom_class/c_labeltabbar.dart';
-import 'package:myflutterapp/pages/acdemey_info_image';
+import 'package:myflutterapp/pages/acdemey_info_image.dart';
 //import 'package:myflutterapp/pages/acdemey_info_reservation';
 //import 'package:myflutterapp/pages/acdemey_info_reView';
 
-import 'acdemey_info_Inform';
+import 'acdemey_info_Inform.dart';
 
 final Item = {
-  Image.asset('images/num1.png', width: 10, height: 10),
-  Image.asset('images/num2.png', width: 10, height: 10),
-  Image.asset('images/num3.png', width: 10, height: 10),
+  Image.asset('assets/icon.png', width: 10, height: 10),
+  Image.asset('assets/icon.png', width: 10, height: 10),
+  Image.asset('assets/icon.png', width: 10, height: 10),
 };
 
 class TabPage extends StatefulWidget {
@@ -34,9 +34,13 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("학원 이름"),
+        backgroundColor: Colors.purple,
+      ),
       body: Column(
         children: [
-          ImageSliderPage(imagelist: Item, _height: 150),
+          ImageSliderPage(imagelist: Item, height: 150),
           Container(
             decoration: BoxDecoration(
               border: Border.all(),

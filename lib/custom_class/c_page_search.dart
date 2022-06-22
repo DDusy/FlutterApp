@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:myflutterapp/custom_class/c_academy_simple.dart';
+import 'package:myflutterapp/custom_class/c_academy_data.dart';
 import 'package:myflutterapp/custom_class/c_academybutton.dart';
 import 'package:myflutterapp/custom_class/c_debouncer.dart';
 import 'package:myflutterapp/custom_class/c_inputfield.dart';
@@ -17,7 +17,7 @@ class SearchWidget extends StatefulWidget {
 class _SearchWidgetState extends State<SearchWidget> {
 
   TextEditingController searchController = TextEditingController();
-  List<SimpleAcademy> academies = [];
+  List<AcademyData> academies = [];
   List<AcademyButton> buttons = [];
   final Debouncer _debouncer = Debouncer(1000);
 
@@ -71,13 +71,11 @@ class _SearchWidgetState extends State<SearchWidget> {
     return ListView(children: buttons,);
   }
 
-  AcademyButton getAcademyButton(SimpleAcademy academy) {
+  AcademyButton getAcademyButton(AcademyData academy) {
     return AcademyButton(name: academy.name, subject: academy.settings["Subject"], msg: academy.name,);
   }
 
   void onSearchChanged() {
-
-    print("Enter onSearchChanged");
 
     //_debouncer.run( () => makeQuery() );
     _debouncer.run(() {
@@ -94,11 +92,9 @@ class _SearchWidgetState extends State<SearchWidget> {
     if (text == "")
       return Future(() => 'TextValue Is Empty');
 
-    print("Enter makeQuery");
-
     var store = FirebaseFirestore.instance;
     bool flag = true;
-    var query = await store.collection('Academies').where('SearchList', arrayContains: text).get().then((value) {
+    await store.collection('Academies').where('SearchList', arrayContains: text).get().then((value) {
 
       academies.clear();
       buttons.clear();
@@ -109,7 +105,7 @@ class _SearchWidgetState extends State<SearchWidget> {
       }
 
       for (var item in value.docs) {
-        SimpleAcademy academy = SimpleAcademy.fromJson(item.data());
+        AcademyData academy = AcademyData.fromJson(item.data());
         academies.add(academy);
       }
 
@@ -150,15 +146,12 @@ class _SearchWidgetState extends State<SearchWidget> {
             future : makeQuery(),
             builder : (BuildContext context, AsyncSnapshot snapshot) {
               if(snapshot.hasData == false) {
-                print("enter1");
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
               else if(snapshot.hasError) {
-                print("enter2");
-                return Text('error');
+                return const Text('error');
               }
               else {
-                print(buttons.length);
                 return getList();
               }      
             },

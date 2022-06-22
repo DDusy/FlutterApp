@@ -21,5 +21,6 @@ class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    return const Text("Academy_Info_Review");
   }
 }

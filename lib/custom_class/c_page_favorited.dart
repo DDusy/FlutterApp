@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:myflutterapp/custom_class/c_academy_simple.dart';
+import 'package:myflutterapp/custom_class/c_academy_data.dart';
 import 'package:myflutterapp/custom_class/c_global.dart';
 
 import 'c_academybutton.dart';
@@ -23,7 +23,7 @@ class _FavoritedWidgetState extends State<FavoritedWidget> {
   @override
   void setState(VoidCallback fn) {
 
-    empty = service.User.favorited.isEmpty;
+    empty = service.user.favorited.isEmpty;
 
     super.setState(fn);
   }
@@ -32,7 +32,7 @@ class _FavoritedWidgetState extends State<FavoritedWidget> {
 
     var store = FirebaseFirestore.instance;
 
-    for (String item in service.User.favorited) {
+    for (String item in service.user.favorited) {
       
       var v = await store.collection('Academies').doc(item).get();
       var name = await v.get("Name");
@@ -41,7 +41,7 @@ class _FavoritedWidgetState extends State<FavoritedWidget> {
       var settings = await v.get("Settings");
       var searchlist = await v.get("SearchList");
 
-      SimpleAcademy academy = SimpleAcademy(name, members, reserve, settings, searchlist);
+      AcademyData academy = AcademyData(name, members, reserve, settings, searchlist);
 
       buttons.add(AcademyButton(
           name: academy.name,
@@ -50,13 +50,11 @@ class _FavoritedWidgetState extends State<FavoritedWidget> {
       ));
     }
 
-    print("end of func [getList]");
-
     return Future(() => "Complete" );
   }
 
   Widget makeViewByList() {
-    if(service.User.favorited.isEmpty) {
+    if(service.user.favorited.isEmpty) {
       return Text('There is no item');
       // return ListView(
       //   children: [

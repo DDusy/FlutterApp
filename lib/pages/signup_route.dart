@@ -159,6 +159,7 @@ class _signup_route extends State<signup_route> {
 
       appBar: AppBar(
         title: const Text("SignUp"),
+        backgroundColor: Colors.purple,
       ),
       body: Container(
           alignment: Alignment.center,

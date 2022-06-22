@@ -23,17 +23,53 @@ class MyService {
   late CustomUser _user;
 
   //short getter for my variable
-  CustomUser get User => _user;
+  CustomUser get user => _user;
 
   //short setter for my variable
   set curUser(CustomUser value) => _user = value;
 
-  void printUserData(){
-    print(User.email);
-    print(User.name);
-    print(User.favorited);
-    print(User.reserve);
+  void navigatorPush(BuildContext context, dynamic dst) {
+      Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => dst,
+        ),
+      );
   }
+
+  void navigatorPushReplacement(BuildContext context, dynamic dst) {
+    Navigator.pushReplacement<void, void>(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => dst,
+      ),
+    );
+  }
+
+  void navigatorPop(BuildContext context) {
+    Navigator.pop(context);
+  }
+
+  String getDateString(DateTime date) {
+    String dateString = "";
+
+    int hour = date.day >= 13 ? date.day - 12 : date.day;
+
+    dateString += date.year.toString() + "년 ";
+    dateString += date.month.toString() + "월 ";
+    dateString += date.day.toString() + "일 ";
+    dateString += (date.day>=13 ? "오후 " : "오전 ") + hour.toString() + "시 ";
+    dateString += date.minute.toString() + "분";
+
+    return dateString;
+  }
+
+  // void printUserData(){
+  //   print(User.email);
+  //   print(User.name);
+  //   print(User.favorited);
+  //   print(User.reserve);
+  // }
 
   void createSnackBar(BuildContext context, String message){
     final scaffold = ScaffoldMessenger.of(context);

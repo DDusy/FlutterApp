@@ -24,7 +24,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    emptyFavorited = service.User.favorited.isEmpty;
+    emptyFavorited = service.user.favorited.isEmpty;
 
     //service.printUserData();
 
@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void setState(VoidCallback fn){
-    emptyFavorited = service.User.favorited.isEmpty;
+    emptyFavorited = service.user.favorited.isEmpty;
 
     super.setState(fn);
   }
@@ -64,7 +64,7 @@ class _MainPageState extends State<MainPage> {
               // personal info
               Flexible(
                 //child: welcomeText(userName: user.name, email: user.email),
-                child: welcomeText(userName: service.User.name,),
+                child: WelcomeText(userName: service.user.name,),
                 flex: 2,
               ),
 

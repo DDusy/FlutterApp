@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myflutterapp/custom_class/c_global.dart';
+import 'package:myflutterapp/pages/acdemey_info_page.dart';
 
 class AcademyButton extends StatefulWidget {
 
@@ -28,11 +30,11 @@ class _AcademyButtonState extends State<AcademyButton> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        print("Navigator Push Academy $msg Page");
+        service.navigatorPush(context, TabPage());
       },
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Color.fromARGB(255, 206, 153, 215), width: 2),
+          border: Border.all(color: const Color.fromARGB(255, 206, 153, 215), width: 2),
           borderRadius: BorderRadius.circular(15),
           shape: BoxShape.rectangle,
         ),
@@ -51,7 +53,7 @@ class _AcademyButtonState extends State<AcademyButton> {
                   Container(
                     width: 50,
                     height: 50,
-                    padding: EdgeInsets.only(left:10),
+                    padding: const EdgeInsets.only(left:10),
                     clipBehavior: Clip.antiAlias,
                     decoration: const BoxDecoration(
                       shape: BoxShape.rectangle,

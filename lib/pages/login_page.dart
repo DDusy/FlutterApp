@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:myflutterapp/custom_class/c_academy_simple.dart';
+import 'package:myflutterapp/custom_class/c_academy_data.dart';
 //import 'package:flutter/services.dart';
 
 import 'package:myflutterapp/custom_class/c_filledbutton.dart';
 import 'package:myflutterapp/custom_class/c_global.dart';
 import 'package:myflutterapp/custom_class/c_inputfield.dart';
+import 'package:myflutterapp/custom_class/c_notice.dart';
 import 'package:myflutterapp/custom_class/c_user.dart';
 import 'package:myflutterapp/pages/forgot_password_page.dart';
 
@@ -125,8 +126,8 @@ class _LoginPageState extends State<LoginPage> {
     return;
   }
 
-  Future<void> saveAcademyDB() async {
-
+  Future<void> saveDBDataSample() async {
+    /*
     String academyName = "임시학원3";
     var members = Map();
     var member = Map();
@@ -159,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
 
-    SimpleAcademy academy = SimpleAcademy(
+    AcademyData academy = AcademyData(
       academyName, members, reserve, settings, searchList
     );
 
@@ -180,6 +181,18 @@ class _LoginPageState extends State<LoginPage> {
     //await store.collection("Users").doc(my.email).update(my.toJson());
 
     // FirebaseAuth.instance.currentUser!.updateDisplayName("김동욱");
+    */
+  
+    Notice notice;
+    String noticeHead = "임시 공지사항입니다.";
+    DateTime time = DateTime(2022,6,30,15,00);
+    String noticeBody = "임시 공지사항입니다.\n" + "나가이쓰레기들아";
+
+    notice = Notice(Timestamp.fromDate(time), noticeHead, noticeBody);
+
+    var store = FirebaseFirestore.instance;
+    //await store.collection("Notice").doc(noticeHead).set(notice.toJson());
+    await store.collection("Notice").doc(noticeHead).update(notice.toJson());
   }
 
   void signup() { 
@@ -250,7 +263,7 @@ class _LoginPageState extends State<LoginPage> {
               style: TextButton.styleFrom(
                 primary: Colors.black,
               ),
-              onPressed: saveAcademyDB,
+              onPressed: saveDBDataSample,
               child: const Text('DB Test Button'),
             ),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myflutterapp/custom_class/c_filledbutton.dart';
+import 'package:myflutterapp/custom_class/c_privacy_appinfo.dart';
 import 'package:myflutterapp/custom_class/c_privacy_notice.dart';
 
 class PrivacyWidget extends StatelessWidget {
@@ -8,7 +9,7 @@ class PrivacyWidget extends StatelessWidget {
   late BuildContext _context;
 
   void testfunc() {
-    print("asdf");
+
   }
 
   void changeNoticeTab() {
@@ -18,8 +19,15 @@ class PrivacyWidget extends StatelessWidget {
     );
   }
 
-  double fontsize = 18;
-  Color buttonColor = Color.fromARGB(255, 222, 167, 232);
+  void changeAppInfoTab() {
+    Navigator.push(
+      _context,
+      MaterialPageRoute(builder: (context) => const AppInfoWidget())
+    );
+  }
+
+  final double fontsize = 18;
+  final Color buttonColor = Color.fromARGB(255, 222, 167, 232);
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +68,15 @@ class PrivacyWidget extends StatelessWidget {
         FilledButton(
           hintText: Text("예약확인", style: TextStyle(fontSize: fontsize)),
           func: testfunc,
+          mainColor: buttonColor,
+          width: double.infinity,
+          height : 70,
+          alignment: Alignment.centerLeft,
+        ),
+        const Padding(padding: EdgeInsets.only(top: 10)),
+        FilledButton(
+          hintText: Text("어플리케이션 정보", style: TextStyle(fontSize: fontsize)),
+          func: changeAppInfoTab,
           mainColor: buttonColor,
           width: double.infinity,
           height : 70,
