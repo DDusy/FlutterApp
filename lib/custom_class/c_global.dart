@@ -86,4 +86,18 @@ class MyService {
   }
 }
 
+String convertDateToString(DateTime time) {
+
+  String res = "";
+
+  return res;
+}
+
+DateTime convertStringToDate(String time) {
+
+  DateTime res = DateTime(2022,06,01);
+
+  return res;
+}
+
 MyService service = MyService();

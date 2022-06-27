@@ -42,11 +42,9 @@ class _AppInfoWidgetState extends State<AppInfoWidget> {
       for(var item in items.items) {
         downloadUrl = await item.getDownloadURL();
 
-        //itemLinks.add();
-
         imageList.add(Image(image: FirebaseImage(convertFromHTTPSToGS(downloadUrl))));
       }
-      
+
       //downloadUrl = convertFromHTTPSToGS(downloadUrl);
 
       downloadUrl = "Success";

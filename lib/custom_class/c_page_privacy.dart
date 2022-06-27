@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myflutterapp/custom_class/c_filledbutton.dart';
+import 'package:myflutterapp/custom_class/c_page_reserve.dart';
 import 'package:myflutterapp/custom_class/c_privacy_appinfo.dart';
 import 'package:myflutterapp/custom_class/c_privacy_notice.dart';
 
@@ -23,6 +24,16 @@ class PrivacyWidget extends StatelessWidget {
     Navigator.push(
       _context,
       MaterialPageRoute(builder: (context) => const AppInfoWidget())
+    );
+  }
+
+  void changeReservationTab() {
+
+    print("?");
+
+    Navigator.push(
+      _context,
+      MaterialPageRoute(builder: (context) => const ReserveWidget())
     );
   }
 
@@ -67,7 +78,7 @@ class PrivacyWidget extends StatelessWidget {
         const Padding(padding: EdgeInsets.only(top:10)),
         FilledButton(
           hintText: Text("예약확인", style: TextStyle(fontSize: fontsize)),
-          func: testfunc,
+          func: changeReservationTab,
           mainColor: buttonColor,
           width: double.infinity,
           height : 70,

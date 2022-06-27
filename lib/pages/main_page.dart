@@ -74,7 +74,7 @@ class _MainPageState extends State<MainPage> {
                     physics: NeverScrollableScrollPhysics(),
                     children: [
                       // tab 1
-                      getTab3(),
+                      getTab1(),
 
                       // tab2
                       //Text('search page'),
