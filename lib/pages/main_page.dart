@@ -57,36 +57,38 @@ class _MainPageState extends State<MainPage> {
       length: 3,
       child: Scaffold(
         
-        body: Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              // personal info
-              Flexible(
-                //child: welcomeText(userName: user.name, email: user.email),
-                child: WelcomeText(userName: service.user.name,),
-                flex: 2,
-              ),
-
-              // tabbarview
-              Flexible(
-                  child: TabBarView(
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      // tab 1
-                      getTab1(),
-
-                      // tab2
-                      //Text('search page'),
-                      getTab2(),
-
-                      // tab3
-                      //Text('privacy page'),
-                      getTab3(),
-                    ],
-                  ),
-                  flex: 10),
-            ],
+        body: SafeArea(
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                // personal info
+                Flexible(
+                  //child: welcomeText(userName: user.name, email: user.email),
+                  child: WelcomeText(userName: service.user.name,),
+                  flex: 2,
+                ),
+        
+                // tabbarview
+                Flexible(
+                    child: TabBarView(
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                        // tab 1
+                        getTab1(),
+        
+                        // tab2
+                        //Text('search page'),
+                        getTab2(),
+        
+                        // tab3
+                        //Text('privacy page'),
+                        getTab3(),
+                      ],
+                    ),
+                    flex: 10),
+              ],
+            ),
           ),
         ),
 

@@ -72,9 +72,15 @@ class _FavoritedWidgetState extends State<FavoritedWidget> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData == false) {
             // 크기 조절하기
-            return CircularProgressIndicator();
+            return Center(
+              child: Container(
+                width: 100,
+                height: 100,
+                child: const CircularProgressIndicator()
+              ),
+            );
           } else if (snapshot.hasError) {
-            return Text('error');
+            return const Text('error');
           } else {
             return ListView(children: buttons);
           }

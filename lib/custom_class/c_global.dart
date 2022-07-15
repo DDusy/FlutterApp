@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'c_academy_data.dart';
 import 'c_user.dart';
 
 class MyService {
@@ -21,12 +22,24 @@ class MyService {
   }
 
   late CustomUser _user;
+  late String _academy;
+  late int _authority;
+  late int _room;
+  late Map _reserveList;
 
   //short getter for my variable
   CustomUser get user => _user;
+  String get academy => _academy;
+  int get authority => _authority;
+  int get room => _room;
+  Map get reserve => _reserveList;
 
   //short setter for my variable
   set curUser(CustomUser value) => _user = value;
+  set curAcademy(String value) => _academy = value;
+  set curAuthority(int value) => _authority = value;
+  set curRoom(int value) => _room = value;
+  set curReserve(Map value) => _reserveList = value;
 
   void navigatorPush(BuildContext context, dynamic dst) {
       Navigator.push(
@@ -71,26 +84,33 @@ class MyService {
   //   print(User.reserve);
   // }
 
-  void createSnackBar(BuildContext context, String message){
-    final scaffold = ScaffoldMessenger.of(context);
-
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text(message),
-        action: SnackBarAction(
-          label: 'OK',
-          onPressed: scaffold.hideCurrentSnackBar,
-        )
-      ),
-    );
-  }
 }
 
 String convertDateToString(DateTime time) {
 
   String res = "";
 
+  res += time.year.toString();
+  res += time.month < 10 ? "0${time.month}" : "${time.month}";
+  res += time.day < 10 ? "0${time.day}" : "${time.day}";
+  res += time.hour < 10 ? "0${time.hour}00" : "${time.hour}00";
+  res += time.second < 10 ? "_00${time.second}" : "_${time.second}";
+
   return res;
+}
+
+void createSnackBar(BuildContext context, String message) {
+  final scaffold = ScaffoldMessenger.of(context);
+
+  scaffold.showSnackBar(
+    SnackBar(
+      content: Text(message),
+      action: SnackBarAction(
+        label: 'OK',
+        onPressed: scaffold.hideCurrentSnackBar,
+      )
+    ),
+  );
 }
 
 DateTime convertStringToDate(String time) {
@@ -98,6 +118,39 @@ DateTime convertStringToDate(String time) {
   DateTime res = DateTime(2022,06,01);
 
   return res;
+}
+
+// void showToast(String msg) {
+//   Fluttertoast.showToast(
+//     msg: msg,
+//     gravity: ToastGravity.BOTTOM,
+//     backgroundColor: Colors.black,
+//     fontSize: 16,
+//     textColor: Colors.white,
+//     toastLength: Toast.LENGTH_LONG,
+//   );
+// }
+
+bool checkReserveCount(DateTime _time) {
+
+  List<String> timeList = [];
+
+  for(var item in service.reserve.keys) {
+    if(service.reserve[item].toString().compareTo(service.user.name) == 0) {
+      timeList.add(item.toString().substring(0,8));
+    }
+  }
+
+  String compareTime = convertDateToString(_time);
+  compareTime = compareTime.substring(0,8);
+  int _count = 0;
+
+  for(var item in timeList) {
+    if(item.compareTo(compareTime) == 0)
+      ++_count;
+  }
+
+  return _count < 2;
 }
 
 MyService service = MyService();

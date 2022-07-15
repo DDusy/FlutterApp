@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:myflutterapp/custom_class/c_page_reserve.dart';
+import 'package:myflutterapp/pages/acdemey_info_page.dart';
 import 'firebase_options.dart';
 
 import 'pages/login_page.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(primaryColor: Colors.purple),
+      //home: TabPage(),
       //home: ReserveWidget(),
       home: LoginPage(),
       //home: main_page(),

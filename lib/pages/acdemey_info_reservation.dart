@@ -1,26 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:myflutterapp/pages/acdemey_info_image.dart';
 
-class TabPage extends StatefulWidget {
-  const TabPage({Key? key}) : super(key: key);
+
+final Item = {
+  Image.asset('icon.png', width: 200, height: 100),
+  Image.asset('icon.png', width: 200, height: 100),
+  Image.asset('icon.png', width: 200, height: 100),
+};
+
+class ReservationPage extends StatelessWidget {
+  const ReservationPage({Key? key}) : super(key: key);
 
   @override
-  _TabPageState createState() => _TabPageState();
+  Widget build(BuildContext context) {
+    return  Scaffold(
+      body: //Column(
+        //children: [
+      // ImageSliderPage(imagelist: Item, _height: 150),
+      BodyLayout(),
+     // ],
+      //),
+    );
+  }
 }
 
-class _TabPageState extends State<TabPage> with TickerProviderStateMixin {
-  late TabController _tabController;
+class BodyLayout extends StatelessWidget{
+  const BodyLayout({Key? key}) : super(key: key);
 
-  @override
-  void initState() {
-    _tabController = TabController(
-      length: 2,
-      vsync: this,
-    );
-    super.initState();
+  Widget _ReservationList(BuildContext context) 
+  {
+    Widget TimeTable = Expanded(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Card(
+          child: ListTile(
+            title: Text("Title"),
+            subtitle: Text("SubTitle"),
+          ),
+        )
+      ],
+    ),
+  );
+
+  return ListView.builder(
+    itemCount:4,
+    itemBuilder: (context, index) {
+      return Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: <Widget>[
+              TimeTable,
+              TimeTable,
+              TimeTable,
+            ],
+          ),
+        ),
+      );
+    },
+  );
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Text("Academy_Info_Reservation");
+    return  _ReservationList(context);
   }
 }

@@ -98,15 +98,15 @@ class _signup_route extends State<signup_route> {
 
   void signup() async {
     if(checkController(newuserNameController)){
-      service.createSnackBar(context, 'Please enter name');
+      createSnackBar(context, 'Please enter name');
       return;
     }
     else if(checkController(newuserEmailController)){
-      service.createSnackBar(context, 'Please enter email');
+      createSnackBar(context, 'Please enter email');
       return;
     }
     else if(checkController(newuserPasswordController)){
-      service.createSnackBar(context, 'Please enter password');
+      createSnackBar(context, 'Please enter password');
       return;
     }
 
@@ -121,7 +121,7 @@ class _signup_route extends State<signup_route> {
       );
     } 
     on FirebaseAuthException catch (e) {
-      service.createSnackBar(context, e.code);
+      createSnackBar(context, e.code);
       bcomplete = false;
     }
     catch (e) {
@@ -129,7 +129,7 @@ class _signup_route extends State<signup_route> {
     }
 
     if(bcomplete){
-      service.createSnackBar(context, 'Your Account is created successfully!');
+      createSnackBar(context, 'Your Account is created successfully!');
       Navigator.pop(context);
       setDB();
       instance.currentUser!.updateDisplayName(newuserNameController.text);
@@ -139,7 +139,7 @@ class _signup_route extends State<signup_route> {
   void setDB() async {
     var store = FirebaseFirestore.instance;
     
-    List<String> favorited = [];
+    List<String> favorited = ["오드럼의드럼스쿨"];
     Map reserve = Map();
 
     final user = <String, dynamic>{

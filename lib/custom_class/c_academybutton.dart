@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:myflutterapp/custom_class/c_academy_data.dart';
 import 'package:myflutterapp/custom_class/c_global.dart';
+import 'package:myflutterapp/pages/acdemey_info_Inform.dart';
 import 'package:myflutterapp/pages/acdemey_info_page.dart';
 
 class AcademyButton extends StatefulWidget {
@@ -24,12 +27,29 @@ class _AcademyButtonState extends State<AcademyButton> {
   String subject;
   String msg;
 
+  late Map _reserveList;
+
   _AcademyButtonState(this.academyName, this.subject, this.msg);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
+
+        service.curAcademy = academyName;
+
+        var store = FirebaseFirestore.instance;
+        var v = await store.collection("Academies").doc(academyName).get();
+        _reserveList = v.get("Reserve");
+        var user = await v.get("Members");
+
+        service.curAuthority = user[service.user.name]["Auth"];
+        service.curRoom = await v.get("Settings")["Rooms"];
+
+        print(service.authority);
+
+        service.curReserve = _reserveList;
+
         service.navigatorPush(context, TabPage());
       },
       child: Container(
@@ -58,7 +78,7 @@ class _AcademyButtonState extends State<AcademyButton> {
                     decoration: const BoxDecoration(
                       shape: BoxShape.rectangle,
                     ),
-                    child : Image.asset('icon.png'),
+                    child : const Text("asdf")//Image.asset('icon.png'),
                   ),
                   Column(
                     mainAxisSize: MainAxisSize.max,

@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:myflutterapp/custom_class/c_global.dart';
 import 'package:myflutterapp/custom_class/c_reservetable.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -14,71 +16,150 @@ class _ReserveWidgetState extends State<ReserveWidget> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
 
-  List<String> tmp = [
-    "20220611_1500_001",
-    "20220611_1600_001",
-    "20220611_1800_001",
-    "20220611_0900_001",
-    "20220611_1000_001",
-    "20220611_1400_001",
-    "20220611_2000_001",
-  ];
-
   late ReserveTable res;
+  late Map _reserveList;
+  late int addDays;
+
+  List<String> _roomList = [];
+  dynamic _selectedRoom;
 
   @override
   void initState() {
     super.initState();
 
+    addDays = service.authority <= 2 ? 21 : 14;
+
+    _roomList = List.generate(service.room, (index) => "연습실${index+1}");
+    _selectedRoom = _roomList[0];
+
     res = ReserveTable();
+  }
+
+  Future<String> getReserveList() async {
+
+    var store = FirebaseFirestore.instance;
+    var v = await store.collection("Academies").doc(service.academy).get();
+
+    String res = "";
+
+    try {
+      _reserveList = await v.get("Reserve");
+
+      service.curReserve = _reserveList;
+
+      res = "Success";
+    }
+    on FirebaseException catch(e) {
+      res = e.message.toString();
+    }
+
+    return Future(() => res);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Reserve")),
-      body: Column(
-        children: [
-          TableCalendar(
-            locale: 'ko-KR',
-            firstDay: DateTime.now(),
-            lastDay: DateTime.now().add(const Duration(days: 14)),
-            focusedDay: _focusedDay,
-            calendarFormat: CalendarFormat.twoWeeks,
-            headerStyle: const HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-              leftChevronVisible: true,
-              rightChevronVisible: true,
-            ),
-            calendarStyle: const CalendarStyle(
-              outsideDaysVisible: true,
-            ),
-            availableGestures: AvailableGestures.none,
-            selectedDayPredicate: (day) {
-              return isSameDay(day, _selectedDay);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
+      appBar: AppBar(
+        title: const Text("Reserve"),
+        actions: <Widget>[
+          DropdownButton(
+            value: _selectedRoom,
+            items: _roomList.map((value) =>  DropdownMenuItem(
+              value: value,
+              child: Text(value))
+            ).toList(),
+            onChanged: (value) {
               setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
+                _selectedRoom = value;
+
+                res.changeDay(context, _selectedDay, _roomList.indexOf(value.toString()));
               });
             },
-          ),
-          Expanded(
-            child: GridView(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                childAspectRatio: 3,
-                mainAxisSpacing: 5.0,
-                crossAxisSpacing: 5.0,
-              ),
-              padding: const EdgeInsets.all(5),
-              children: res.getButtons(),
-            ),
-          ),
+          )
         ],
+      ),
+      body: SafeArea(
+        child:FutureBuilder(
+          future: getReserveList(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if(snapshot.hasData == null) {
+              return Center(
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  child: const CircularProgressIndicator()
+                ),
+              );
+            }
+            else if(snapshot.hasError) {
+              return const Text("Load Failed");
+            }
+            else {
+              if(snapshot.data.toString().compareTo("Success") != 0) {
+                return Text(snapshot.data.toString());
+              }
+              else {
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    await getReserveList();
+
+                    setState(() {
+                      res.changeDay(context, _selectedDay, _roomList.indexOf(_selectedRoom));
+                    });
+
+                    return Future<void>.delayed(const Duration(seconds: 0));
+                  },
+                  child: Column(
+                    children: [
+                      TableCalendar(
+                        locale: 'ko-KR',
+                        firstDay: DateTime.now(),
+                        lastDay: DateTime.now().add(Duration(days: addDays)),
+                        focusedDay: _focusedDay,
+                        calendarFormat: CalendarFormat.twoWeeks,
+                        headerStyle: const HeaderStyle(
+                          formatButtonVisible: false,
+                          titleCentered: true,
+                          leftChevronVisible: true,
+                          rightChevronVisible: true,
+                        ),
+                        calendarStyle: const CalendarStyle(
+                          outsideDaysVisible: false,
+                        ),
+                        availableGestures: AvailableGestures.none,
+                        selectedDayPredicate: (day) {
+                          return isSameDay(day, _selectedDay);
+                        },
+                        onDaySelected: (selectedDay, focusedDay) {
+                          setState(() {
+                            _selectedDay = selectedDay;
+                            _focusedDay = focusedDay;
+                
+                            res.changeDay(context, selectedDay, _roomList.indexOf(_selectedRoom));
+                          });
+                        },
+                      ),
+                      Expanded(
+                        child: GridView(
+                          //physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 3,
+                            mainAxisSpacing: 5.0,
+                            crossAxisSpacing: 5.0,
+                          ),
+                          padding: const EdgeInsets.all(5),
+                          children: res.getButtons(),
+                        ),
+                      ),
+                    ],
+                  ),
+                );                
+              }
+            }
+          }
+        ),
+        // child: 
       ),
     );
   }

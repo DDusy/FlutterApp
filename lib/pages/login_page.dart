@@ -51,10 +51,10 @@ class _LoginPageState extends State<LoginPage> {
 
   void signin() async {
     if (checkController(emailController)) {
-      service.createSnackBar(context, 'Please enter email');
+      createSnackBar(context, 'Please enter email');
       return;
     } else if (checkController(passwordController)) {
-      service.createSnackBar(context, 'Please enter password');
+      createSnackBar(context, 'Please enter password');
       return;
     }
 
@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
     } on FirebaseAuthException catch (e) {
       // print('enter FirebaseAuthException Catch');
       // print(e.code);
-      service.createSnackBar(context, e.code);
+      createSnackBar(context, e.code);
       bcomplete = false;
     } catch (e) {
       // print('Catch');
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
       String email = instance.currentUser!.email.toString();
 
       await getDataByDB(email);
-      service.createSnackBar(context, 'Hello!');
+      createSnackBar(context, 'Hello!');
 
       service.curUser = user;
 
@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
     } 
     else {
       await instance.currentUser!.sendEmailVerification();
-      service.createSnackBar(context, 'Please verify your email');
+      createSnackBar(context, 'Please verify your email');
     }
   }
 
@@ -212,61 +212,63 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.only(top: 50),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Text(
-              'App Name',
-              style: TextStyle(
-                fontSize: 44,
-                color: Colors.black,
+      body: SafeArea(
+        child: Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.only(top: 50),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Text(
+                'App Name',
+                style: TextStyle(
+                  fontSize: 44,
+                  color: Colors.black,
+                ),
               ),
-            ),
-            InputField(
-              hintText: 'Email Address',
-              padding: const EdgeInsets.only(left: 10),
-              margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-              controller: emailController,
-              type: TextInputType.emailAddress,
-            ),
-            InputField(
-              hintText: 'Password',
-              padding: const EdgeInsets.only(left: 10),
-              margin: const EdgeInsets.fromLTRB(15, 20, 15, 25),
-              isPassword: true,
-              controller: passwordController,
-              type: TextInputType.visiblePassword,
-            ),
-
-            FilledButton(hintText: const Text('Sign in'), func: signin, mainColor: MyApp.mainColor),
-
-            const Padding(padding: EdgeInsets.only(top:30)),
-
-            TextButton(
-              style: TextButton.styleFrom(
-                primary: Colors.black,
+              InputField(
+                hintText: 'Email Address',
+                padding: const EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                controller: emailController,
+                type: TextInputType.emailAddress,
               ),
-              onPressed: signup,
-              child: const Text('Sign up'),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                primary: Colors.black,
+              InputField(
+                hintText: 'Password',
+                padding: const EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.fromLTRB(15, 20, 15, 25),
+                isPassword: true,
+                controller: passwordController,
+                type: TextInputType.visiblePassword,
               ),
-              onPressed: reset,
-              child: const Text('Forgot Password'),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                primary: Colors.black,
+      
+              FilledButton(hintText: const Text('Sign in'), func: signin, mainColor: MyApp.mainColor),
+      
+              const Padding(padding: EdgeInsets.only(top:30)),
+      
+              TextButton(
+                style: TextButton.styleFrom(
+                  primary: Colors.black,
+                ),
+                onPressed: signup,
+                child: const Text('Sign up'),
               ),
-              onPressed: saveDBDataSample,
-              child: const Text('DB Test Button'),
-            ),
-          ],
+              TextButton(
+                style: TextButton.styleFrom(
+                  primary: Colors.black,
+                ),
+                onPressed: reset,
+                child: const Text('Forgot Password'),
+              ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  primary: Colors.black,
+                ),
+                onPressed: saveDBDataSample,
+                child: const Text('DB Test Button'),
+              ),
+            ],
+          ),
         ),
       ),
     );

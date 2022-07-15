@@ -20,7 +20,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   void reset() async {
     if(emailController.text.isEmpty){
       //MyApp.createSnackBar(context, 'Please enter email');
-      service.createSnackBar(context, 'Please enter email');
+      createSnackBar(context, 'Please enter email');
       return;
     }
 
@@ -31,7 +31,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       await instance.sendPasswordResetEmail(email: emailController.text);
     } 
     on FirebaseAuthException catch (e) {
-      service.createSnackBar(context, e.code);
+      createSnackBar(context, e.code);
       bcomplete = false;
     }
     catch (e) {
@@ -39,7 +39,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     }
 
     if(bcomplete){
-      service.createSnackBar(context, 'Check your email');
+      createSnackBar(context, 'Check your email');
       Navigator.pop(context);
     }
   }
