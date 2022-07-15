@@ -59,23 +59,32 @@ class ReserveButtonState extends State<ReserveButton> {
     Map reserve = service.reserve;
 
     if(service.authority > 2) {
-      if(!checkReserveCount(time))
+      if(!checkReserveCount(time)) {
+
+        createSnackBar(context, "해당 날짜에 더이상 예약을 할 수 없습니다.");
+
         return;    
+      }
     }
 
     reserve[convertDateToString(time)] = service.user.name;
 
     var store = FirebaseFirestore.instance;
-    var v = await store.collection("Academies").doc(service.academy).update(
+    var acadmey = await store.collection("Academies").doc(service.academy).update(
       {"Reserve": reserve}
+    );
+
+    var userReserve = service.user.reserve;
+    userReserve[convertDateToString(time)] = service.academy;
+    var user = await store.collection("Users").doc(service.user.email).update(
+      {"Reserve": userReserve}
     );
 
     setState(() {
       breserve = false;
+      createSnackBar(context, "예약되었습니다.");
       //showToast("Success");
     });
-
-    print("Success");
   }
 
   @override

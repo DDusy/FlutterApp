@@ -183,6 +183,8 @@ class _LoginPageState extends State<LoginPage> {
     // FirebaseAuth.instance.currentUser!.updateDisplayName("김동욱");
     */
   
+    /*
+
     Notice notice;
     String noticeHead = "임시 공지사항입니다.";
     DateTime time = DateTime(2022,6,30,15,00);
@@ -193,6 +195,8 @@ class _LoginPageState extends State<LoginPage> {
     var store = FirebaseFirestore.instance;
     //await store.collection("Notice").doc(noticeHead).set(notice.toJson());
     await store.collection("Notice").doc(noticeHead).update(notice.toJson());
+
+    */
   }
 
   void signup() { 

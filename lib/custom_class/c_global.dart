@@ -108,7 +108,8 @@ void createSnackBar(BuildContext context, String message) {
       action: SnackBarAction(
         label: 'OK',
         onPressed: scaffold.hideCurrentSnackBar,
-      )
+      ),
+      duration: const Duration(seconds: 1),
     ),
   );
 }
